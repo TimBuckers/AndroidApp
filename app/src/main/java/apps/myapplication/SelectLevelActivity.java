@@ -1,11 +1,13 @@
 package apps.myapplication;
 
+import android.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class SelectLevelActivity extends AppCompatActivity {
+public class SelectLevelActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
