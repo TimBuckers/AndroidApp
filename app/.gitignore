@@ -1,3 +1,5 @@
-*
-!.gitignore
-!src
+build/*
+libs/*
+app.iml
+build.gradle
+proguard-rules.pro
