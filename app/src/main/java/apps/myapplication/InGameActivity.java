@@ -1,5 +1,9 @@
 package apps.myapplication;
 
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
@@ -25,6 +29,7 @@ public class InGameActivity extends ActionBarActivity {
 
         // array with empty blocks
         int[] array = {12,13,14, 22, 31};
+        int blocksize = blockSize(5);
 
         LinearLayout llHorizontal = (LinearLayout) findViewById(R.id.linearlayout_main);
         for(int c =0; c <5; c++) {
@@ -35,16 +40,19 @@ public class InGameActivity extends ActionBarActivity {
             //add 5 blocks
             for (int r = 0; r < 5; r++) {
                 if( !contains(array, r * 10 + c ) ) {
+
                     ImageButton ib = new ImageButton(this);
-                    ///blockSize(5);
-                    ib.setBackground(getResources().getDrawable(R.drawable.empty_block));
+                    Bitmap b = decodeSampledBitmapFromResource(getResources(), R.drawable.empty_block, blocksize, blocksize);
+                    BitmapDrawable bitmapDrawable = new BitmapDrawable(getResources(), b);
+                    ib.setBackground(bitmapDrawable);
                     int id = 1000 + r * 10 + c;
                     ib.setId(id);
                     llVertical.addView(ib);
                 }else{
                     ImageView ib = new ImageButton(this);
-                    ib.setBackground(getResources().getDrawable(R.drawable.empty_block));
-                    ib.setAlpha(0);
+                    Bitmap b = decodeSampledBitmapFromResource(getResources(), R.drawable.block_black, blocksize, blocksize);
+                    BitmapDrawable bitmapDrawable = new BitmapDrawable(getResources(), b);
+                    ib.setBackground(bitmapDrawable);
                     int id = 1000 + r * 10 + c;
                     ib.setId(id);
                     llVertical.addView(ib);
@@ -57,15 +65,55 @@ public class InGameActivity extends ActionBarActivity {
 
 
     }
+    
+    public static Bitmap decodeSampledBitmapFromResource(Resources res, int resId,
+                                                         int reqWidth, int reqHeight) {
+
+        // First decode with inJustDecodeBounds=true to check dimensions
+        final BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeResource(res, resId, options);
+
+        // Calculate inSampleSize
+        options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
+
+        // Decode bitmap with inSampleSize set
+        options.inJustDecodeBounds = false;
+        return BitmapFactory.decodeResource(res, resId, options);
+    }
+    public static int calculateInSampleSize(
+            BitmapFactory.Options options, int reqWidth, int reqHeight) {
+        // Raw height and width of image
+        final int height = options.outHeight;
+        final int width = options.outWidth;
+        int inSampleSize = 1;
+
+        if (height > reqHeight || width > reqWidth) {
+
+            final int halfHeight = height / 2;
+            final int halfWidth = width / 2;
+
+            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
+            // height and width larger than the requested height and width.
+            while ((halfHeight / inSampleSize) > reqHeight
+                    && (halfWidth / inSampleSize) > reqWidth) {
+                inSampleSize *= 2;
+            }
+        }
+
+        return inSampleSize;
+    }
 
     public int blockSize(int blocks){
         DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
-        int toolbarHeight = toolbar.getHeight();
-        int realHeight = displayMetrics.heightPixels - toolbarHeight;
-        if( realHeight < displayMetrics.widthPixels) {
+        float toolbarHeight = displayMetrics.density * 50;
+        int width = displayMetrics.widthPixels;
+        float realHeight = displayMetrics.heightPixels - toolbarHeight;
+
+        if( realHeight < width) {
             return Math.round( (realHeight ) / (blocks + 2) );
         }else{
-            return Math.round( (displayMetrics.widthPixels ) / (blocks + 2) );
+            return Math.round( (width ) / (blocks + 2) );
         }
     }
 
