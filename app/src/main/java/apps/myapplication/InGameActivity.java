@@ -4,6 +4,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
@@ -19,6 +20,15 @@ import android.widget.LinearLayout;
  */
 public class InGameActivity extends ActionBarActivity {
     private Toolbar toolbar;
+    MediaPlayer mediaPlayer = null;
+
+    @Override
+    protected void onStop(){
+        super.onStop();
+        if (mediaPlayer != null) {
+            mediaPlayer.stop();
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +36,13 @@ public class InGameActivity extends ActionBarActivity {
         setContentView(R.layout.activity_in_game);
         toolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
+
+        if (mediaPlayer == null){
+            mediaPlayer = MediaPlayer.create(this, R.raw.carefree);
+            mediaPlayer.isLooping();
+            mediaPlayer.start();
+        }
+
 
         // array with empty blocks
         int[] array = {12,13,14, 22, 31};
@@ -65,7 +82,7 @@ public class InGameActivity extends ActionBarActivity {
 
 
     }
-    
+
     public static Bitmap decodeSampledBitmapFromResource(Resources res, int resId,
                                                          int reqWidth, int reqHeight) {
 
