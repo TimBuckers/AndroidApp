@@ -1,13 +1,26 @@
 package apps.myapplication;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 
 public class HomeScreenActivity extends AppCompatActivity {
+
+    public void selectLevels(View view) {
+        Intent intent = new Intent(this, SelectLevelActivity.class);
+        startActivity(intent);
+    }
+
+    public void inGame(View view) {
+        Intent intent = new Intent(this, InGameActivity.class);
+        startActivity(intent);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
