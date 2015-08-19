@@ -5,6 +5,7 @@
     <string name="app_name">Array</string>
     <string name="title_activity_select_level">SelectLevel</string>
     <string name="title_activity_in_game_activity">InGame</string>
+    <string name="title_activity_levels_overview">LevelsOverview</string>
 
 
 </resources>

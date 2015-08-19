@@ -1,20 +1,22 @@
 package apps.myapplication;
 
 import android.content.Intent;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
-public class HomeScreenActivity extends AppCompatActivity {
+public class LevelsOverview extends FragmentActivity {
 
-    public void selectLevels(View view) {
-        Intent intent = new Intent(this, LevelsOverview.class);
-        startActivity(intent);
-    }
+   AppSectionsPagerAdapter mAppSectionsPagerAdapter;
+    ViewPager mViewPager;
 
     public void inGame(View view) {
         Intent intent = new Intent(this, InGameActivity.class);
@@ -24,7 +26,8 @@ public class HomeScreenActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home_screen);
+        setContentView(R.layout.activity_levels_overview);
+
 
         ImageView imageView = (ImageView) findViewById(R.id.imageView);
         DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
@@ -34,12 +37,19 @@ public class HomeScreenActivity extends AppCompatActivity {
             imageView.setImageDrawable(getResources().getDrawable(R.drawable.homescreen_background_long));
         }
 
+        // ViewPager and its adapters use support library
+        // fragments, so use getSupportFragmentManager.
+        mAppSectionsPagerAdapter =
+                new AppSectionsPagerAdapter(
+                        getSupportFragmentManager());
+        mViewPager = (ViewPager) findViewById(R.id.pager);
+        mViewPager.setAdapter(mAppSectionsPagerAdapter);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_levels_overview, menu);
         return true;
     }
 
@@ -56,6 +66,34 @@ public class HomeScreenActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public static class AppSectionsPagerAdapter extends FragmentPagerAdapter {
+        public AppSectionsPagerAdapter(FragmentManager fm) { super(fm); }
+
+        @Override
+        public Fragment getItem(int i)
+        {
+            switch(i) {
+                case 0:
+                    return new LevelOneFragment();
+                case 1:
+                    return new LevelTwoFragment();
+                case 2:
+                    return new LevelThreeFragment();
+                default:
+                    return new LevelOneFragment();
+            }
+        }
+
+        @Override
+        public int getCount() { return 3; }
+
+        @Override
+        public CharSequence getPageTitle(int position)
+        {
+            return "title";
+        }
     }
 
 }
