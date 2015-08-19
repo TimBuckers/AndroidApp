@@ -24,6 +24,10 @@
             android:name=".InGameActivity"
             android:label="@string/title_activity_in_game_activity" >
         </activity>
+        <activity
+            android:name=".LevelsOverview"
+            android:label="@string/title_activity_levels_overview" >
+        </activity>
     </application>
 
 </manifest>
