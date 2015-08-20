@@ -29,8 +29,20 @@
             android:label="@string/title_activity_levels_overview" >
         </activity>
         <activity
-            android:name=".PostGameActivity"
+            android:name=".PostGameFriendActivity"
             android:label="@string/title_activity_post_game" >
+        </activity>
+        <activity
+            android:name=".VersusComputerActivity"
+            android:label="@string/title_activity_versus_computer" >
+        </activity>
+        <activity
+            android:name=".SelectDifficultyActivity"
+            android:label="@string/title_activity_select_difficulty" >
+        </activity>
+        <activity
+            android:name=".PostGameComputerActivity"
+            android:label="@string/title_activity_post_game_computer" >
         </activity>
     </application>
 

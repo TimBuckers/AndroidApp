@@ -3,17 +3,17 @@ package apps.myapplication;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
-public class PostGameActivity extends AppCompatActivity {
+public class PostGameComputerActivity extends AppCompatActivity {
 
     // Which level you just came from
     private static String levelNumber;
+    // How high the difficulty is
+    private static String difficulty;
     // Score
     private static  int scoreA;
     private static  int scoreB;
@@ -21,8 +21,10 @@ public class PostGameActivity extends AppCompatActivity {
     public void playAgain(View view) {
 
         levelNumber = getIntent().getExtras().getString("LevelNumber");
-        Intent intent = new Intent(this, InGameActivity.class);
+        difficulty = getIntent().getExtras().getString("Difficulty");
+        Intent intent = new Intent(this, VersusComputerActivity.class);
         intent.putExtra("LevelNumber", levelNumber);
+        intent.putExtra("Difficulty", difficulty);
         startActivity(intent);
     }
 
@@ -34,7 +36,7 @@ public class PostGameActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_post_game);
+        setContentView(R.layout.activity_post_game_friend);
 
         levelNumber = getIntent().getExtras().getString("LevelNumber");
         setTitle("Finished " + levelNumber);

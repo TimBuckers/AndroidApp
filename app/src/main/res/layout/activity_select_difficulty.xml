@@ -1,0 +1,57 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="apps.myapplication.PostGameFriendActivity">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        android:id="@+id/imageView"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/buttonEasy"
+        android:alpha="0.8"
+        android:text="Easy"
+        android:textColor="@android:color/white"
+        android:background="@drawable/button_custom"
+        android:onClick="selectLevelsComp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="40dp"
+        android:layout_below="@+id/buttonMedium"
+        android:layout_alignLeft="@+id/buttonMedium"
+        android:layout_alignStart="@+id/buttonMedium" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/buttonMedium"
+        android:alpha="0.8"
+        android:text="Medium"
+        android:textColor="@android:color/white"
+        android:background="@drawable/button_custom"
+        android:onClick="selectLevelsComp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="41dp"
+        android:layout_below="@+id/buttonHard"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/buttonHard"
+        android:alpha="0.8"
+        android:text="Hard"
+        android:textColor="@android:color/white"
+        android:background="@drawable/button_custom"
+        android:onClick="selectLevelsComp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="106dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignLeft="@+id/buttonMedium"
+        android:layout_alignStart="@+id/buttonMedium" />
+
+
+</RelativeLayout>
