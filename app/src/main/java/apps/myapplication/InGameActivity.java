@@ -30,7 +30,7 @@ public class InGameActivity extends ActionBarActivity {
 
 
     /**
-     * Level Data (first two values is the length x width)
+     * Level Data (first two values is the width x length)
      **/
     // Level 1
     private static int[] arrayLevel1 = {5, 5, 13, 14, 15, 23, 24, 52, 53};
@@ -199,21 +199,9 @@ public class InGameActivity extends ActionBarActivity {
             if(!arrayX.contains(blockID) && !arrayA.contains(blockID) && !arrayB.contains(blockID)) {
                 if (turn == 0) {
                     clickA = blockID;
-                    Log.d("Level: ", levelNumberString);
-                    Log.d("arrayA: ", arrayA.size() + " elements");
-                    Log.d("arrayB: ", arrayB.size() + " elements");
-                    Log.d("arrayD for case 1: ", arrayD.size() + " elements");
-                    Log.d("arrayX: ", arrayX.size() + " elements");
-                    Log.d("Total blocks: ", blockNumbers + " blocks");
                 }
                 if (turn == 1) {
                     clickB = blockID;
-                    Log.d("Level: ", levelNumberString);
-                    Log.d("arrayA: ", arrayA.size() + " elements");
-                    Log.d("arrayB: ", arrayB.size() + " elements");
-                    Log.d("arrayD for case 1: ", arrayD.size() + " elements");
-                    Log.d("arrayX: ", arrayX.size() + " elements");
-                    Log.d("Total blocks: ", blockNumbers + " blocks");
                 }
                 turn++;
 
