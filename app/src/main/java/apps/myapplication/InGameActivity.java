@@ -1,5 +1,6 @@
 package apps.myapplication;
 
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -43,6 +44,8 @@ public class InGameActivity extends ActionBarActivity {
             mediaPlayer.start();
         }
 
+        String levelNumber = getIntent().getExtras().getString("LevelNumber");
+        setTitle(levelNumber);
 
         // array with empty blocks
         int[] array = {12,13,14, 22, 31};

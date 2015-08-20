@@ -7,7 +7,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/imageButton"
+        android:id="@+id/imageButton3"
         android:alpha="0.8"
         android:text="Level 3"
         android:textColor="@android:color/white"
