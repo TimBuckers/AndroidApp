@@ -11,15 +11,21 @@ import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 
 public class LevelsOverview extends FragmentActivity {
 
    AppSectionsPagerAdapter mAppSectionsPagerAdapter;
     ViewPager mViewPager;
+    static String[] titles = {"1", "2", "3"};
 
     public void inGame(View view) {
         Intent intent = new Intent(this, InGameActivity.class);
+        Button button = (Button) findViewById(view.getId());
+        String buttonText = (String) button.getText();
+        intent.putExtra("LevelNumber", buttonText);
         startActivity(intent);
     }
 
@@ -92,7 +98,7 @@ public class LevelsOverview extends FragmentActivity {
         @Override
         public CharSequence getPageTitle(int position)
         {
-            return "title";
+            return titles[position];
         }
     }
 

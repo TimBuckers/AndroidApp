@@ -72,6 +72,9 @@ public class InGameActivity extends ActionBarActivity {
             mediaPlayer.start();
         }
 
+        String levelNumber = getIntent().getExtras().getString("LevelNumber");
+        setTitle(levelNumber);
+        
         /**
          * setup the map
          */
