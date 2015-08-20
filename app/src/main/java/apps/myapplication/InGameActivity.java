@@ -9,11 +9,15 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+
+import java.util.ArrayList;
 
 /**
  * Created by Tim on 8/19/2015.
@@ -21,6 +25,30 @@ import android.widget.LinearLayout;
 public class InGameActivity extends ActionBarActivity {
     private Toolbar toolbar;
     MediaPlayer mediaPlayer = null;
+
+
+
+    /**
+     * Game Data
+     **/
+    // Player A
+    private static ArrayList<Integer> arrayA = new ArrayList<Integer>();
+    // Player B
+    private static ArrayList<Integer> arrayB = new ArrayList<Integer>();
+    // X for the disabled blocks in game
+    private static ArrayList<Integer> arrayX = new ArrayList<Integer>();
+    // array with disabled blocks map
+    private static ArrayList<Integer> arrayD = new ArrayList<Integer>();
+
+    // Score
+    private static  int scoreA =0;
+    private static  int scoreB =0;
+
+    private static int clickA = 0;
+    private static int clickB = 0;
+
+    // turn A(0) B(1) or Done(2)
+    private static int turn = 0;
 
     @Override
     protected void onStop(){
@@ -37,32 +65,40 @@ public class InGameActivity extends ActionBarActivity {
         toolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
 
+        //start media
         if (mediaPlayer == null){
             mediaPlayer = MediaPlayer.create(this, R.raw.carefree);
             mediaPlayer.isLooping();
             mediaPlayer.start();
         }
 
+        /**
+         * setup the map
+         */
 
-        // array with empty blocks
-        int[] array = {12,13,14, 22, 31};
         int blocksize = blockSize(5);
 
         LinearLayout llHorizontal = (LinearLayout) findViewById(R.id.linearlayout_main);
-        for(int c =0; c <5; c++) {
+        for(int c =1; c <6; c++) {
             LinearLayout llVertical = new LinearLayout(this);
             llVertical.setOrientation(LinearLayout.VERTICAL);
 
 
+            arrayD.add(22);
+            arrayD.add(31);
+            arrayD.add(44);
+            arrayD.add(23);
+
             //add 5 blocks
-            for (int r = 0; r < 5; r++) {
-                if( !contains(array, r * 10 + c ) ) {
+            for (int r = 1; r < 6; r++) {
+                if( !arrayD.contains(r * 10 + c ) ) {
 
                     ImageButton ib = new ImageButton(this);
                     Bitmap b = decodeSampledBitmapFromResource(getResources(), R.drawable.empty_block, blocksize, blocksize);
                     BitmapDrawable bitmapDrawable = new BitmapDrawable(getResources(), b);
                     ib.setBackground(bitmapDrawable);
-                    int id = 1000 + r * 10 + c;
+                    int id = r * 10 + c;
+                    ib.setOnClickListener(onClickListener);
                     ib.setId(id);
                     llVertical.addView(ib);
                 }else{
@@ -81,7 +117,55 @@ public class InGameActivity extends ActionBarActivity {
         }
 
 
+
     }
+
+    private View.OnClickListener onClickListener = new View.OnClickListener() {
+
+        @Override
+        public void onClick(final View v) {
+            int blockID = v.getId();
+            // validate move
+            if(!arrayX.contains(blockID) && !arrayA.contains(blockID) && !arrayB.contains(blockID)) {
+                if (turn == 0) {
+                    clickA = blockID;
+                }
+                if (turn == 1) {
+                    clickB = blockID;
+                }
+                turn++;
+
+                if (turn == 2) {
+                    if (clickA == clickB) {
+                        arrayX.add(clickA);
+
+                        ImageButton ib1 = (ImageButton) findViewById(clickA);
+                        Bitmap b1 = decodeSampledBitmapFromResource(getResources(), R.drawable.block_black, blockSize(5), blockSize(5));
+                        BitmapDrawable bitmapDrawable1 = new BitmapDrawable(getResources(), b1);
+                        ib1.setBackground(bitmapDrawable1);
+
+                    } else {
+                        arrayA.add(clickA);
+                        Log.d("test", "clickA: " + clickA);
+                        ImageButton ib2 = (ImageButton) findViewById(clickA);
+                        Bitmap b2 = decodeSampledBitmapFromResource(getResources(), R.drawable.orange, blockSize(5), blockSize(5));
+                        BitmapDrawable bitmapDrawable2 = new BitmapDrawable(getResources(), b2);
+                        ib2.setBackground(bitmapDrawable2);
+
+                        arrayB.add(clickB);
+                        Log.d("test", "clickB: " + clickB);
+                        ImageButton ib3 = (ImageButton) findViewById(clickB);
+                        Bitmap b3 = decodeSampledBitmapFromResource(getResources(), R.drawable.purple, blockSize(5), blockSize(5));
+                        BitmapDrawable bitmapDrawable3 = new BitmapDrawable(getResources(), b3);
+                        ib3.setBackground(bitmapDrawable3);
+                    }
+                    turn = 0;
+                }
+            }
+
+           // Log.d( "test", v.getId() + "a");
+        }
+    };
 
     public static Bitmap decodeSampledBitmapFromResource(Resources res, int resId,
                                                          int reqWidth, int reqHeight) {
@@ -134,14 +218,6 @@ public class InGameActivity extends ActionBarActivity {
         }
     }
 
-    public boolean contains( int[] array, int number){
-        for(int i = 0 ; i < array.length; i++){
-            if(array[i] == number){
-                return true;
-            }
-        }
-        return false;
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
