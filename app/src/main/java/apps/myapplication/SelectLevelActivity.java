@@ -13,6 +13,7 @@ public class SelectLevelActivity extends ActionBarActivity {
 
     public void inGame(View view) {
         Intent intent = new Intent(this, InGameActivity.class);
+
         startActivity(intent);
     }
 

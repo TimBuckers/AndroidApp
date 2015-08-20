@@ -28,6 +28,10 @@
             android:name=".LevelsOverview"
             android:label="@string/title_activity_levels_overview" >
         </activity>
+        <activity
+            android:name=".PostGameActivity"
+            android:label="@string/title_activity_post_game" >
+        </activity>
     </application>
 
 </manifest>

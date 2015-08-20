@@ -6,6 +6,7 @@
     <string name="title_activity_select_level">SelectLevel</string>
     <string name="title_activity_in_game_activity">InGame</string>
     <string name="title_activity_levels_overview">LevelsOverview</string>
+    <string name="title_activity_post_game">PostGameActivity</string>
 
 
 </resources>

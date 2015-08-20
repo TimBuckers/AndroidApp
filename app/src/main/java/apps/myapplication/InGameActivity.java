@@ -1,5 +1,6 @@
 package apps.myapplication;
 
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -13,6 +14,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -27,6 +29,19 @@ public class InGameActivity extends ActionBarActivity {
     MediaPlayer mediaPlayer = null;
 
 
+    /**
+     * Level Data (first two values is the length x width)
+     **/
+    // Level 1
+    private static int[] arrayLevel1 = {5, 5, 13, 14, 15, 23, 24, 52, 53};
+    // Level 2
+    private static int[] arrayLevel2 = {5, 5, 11, 12, 15, 25, 33, 51, 52};
+    // Level 3
+    private static int[] arrayLevel3 = {6, 6, 33, 12, 65, 23, 24, 62, 53};
+    // Width of the Level
+    private static int levelWidth;
+    // Length of the Level
+    private static int levelLength;
 
     /**
      * Game Data
@@ -39,10 +54,14 @@ public class InGameActivity extends ActionBarActivity {
     private static ArrayList<Integer> arrayX = new ArrayList<Integer>();
     // array with disabled blocks map
     private static ArrayList<Integer> arrayD = new ArrayList<Integer>();
+    // Total amount of blocks
+    private static int blockNumbers;
+    // Which level
+    private static String levelNumberString;
 
     // Score
-    private static  int scoreA =0;
-    private static  int scoreB =0;
+    private static  int scoreA =2;
+    private static  int scoreB =1;
 
     private static int clickA = 0;
     private static int clickB = 0;
@@ -56,6 +75,15 @@ public class InGameActivity extends ActionBarActivity {
         if (mediaPlayer != null) {
             mediaPlayer.stop();
         }
+        arrayA.clear();
+        arrayB.clear();
+        arrayD.clear();
+        arrayX.clear();
+        scoreA = 0;
+        scoreB = 0;
+        clickA = 0;
+        clickB = 0;
+        blockNumbers = 0;
     }
 
     @Override
@@ -72,28 +100,65 @@ public class InGameActivity extends ActionBarActivity {
             mediaPlayer.start();
         }
 
-        String levelNumber = getIntent().getExtras().getString("LevelNumber");
-        setTitle(levelNumber);
+        levelNumberString = getIntent().getExtras().getString("LevelNumber");
+        setTitle(levelNumberString);
+        String numberString = levelNumberString.substring(levelNumberString.length() - 1);
+        int levelNumberInt = Integer.parseInt(numberString);
         
         /**
          * setup the map
          */
+        switch(levelNumberInt)
+        {
+            case 1:
+                levelWidth = arrayLevel1[0];
+                levelLength = arrayLevel1[1];
+                for(int i = 2; i < 9; i++)
+                {
+                    arrayD.add(arrayLevel1[i]);
+                }
+                /*
+                Log.d("Level: ", levelNumberString);
+                Log.d("arrayA: ", arrayA.size() + " elements");
+                Log.d("arrayB: ", arrayB.size() + " elements");
+                Log.d("arrayD for case 1: ", arrayD.size() + " elements");
+                Log.d("arrayX: ", arrayX.size() + " elements");
+                Log.d("Total blocks: ", blockNumbers + " blocks");*/
+                break;
+            case 2:
+                levelWidth = arrayLevel2[0];
+                levelLength = arrayLevel2[1];
+                for(int i = 2; i < 9; i++)
+                {
+                    arrayD.add(arrayLevel2[i]);
+                }
+                break;
+            case 3:
+                levelWidth = arrayLevel3[0];
+                levelLength = arrayLevel3[1];
+                for(int i = 2; i < 9; i++)
+                {
+                    arrayD.add(arrayLevel3[i]);
+                }
+                break;
+            default:
+                levelWidth = arrayLevel1[0];
+                levelLength = arrayLevel1[1];
+                for(int i = 2; i < 9; i++)
+                {
+                    arrayD.add(arrayLevel1[i]);
+                }
+        }
 
-        int blocksize = blockSize(5);
+        int blocksize = blockSize(levelWidth);
 
         LinearLayout llHorizontal = (LinearLayout) findViewById(R.id.linearlayout_main);
-        for(int c =1; c <6; c++) {
+        for(int c =1; c <levelWidth + 1; c++) {
             LinearLayout llVertical = new LinearLayout(this);
             llVertical.setOrientation(LinearLayout.VERTICAL);
 
-
-            arrayD.add(22);
-            arrayD.add(31);
-            arrayD.add(44);
-            arrayD.add(23);
-
             //add 5 blocks
-            for (int r = 1; r < 6; r++) {
+            for (int r = 1; r < levelLength + 1; r++) {
                 if( !arrayD.contains(r * 10 + c ) ) {
 
                     ImageButton ib = new ImageButton(this);
@@ -104,6 +169,7 @@ public class InGameActivity extends ActionBarActivity {
                     ib.setOnClickListener(onClickListener);
                     ib.setId(id);
                     llVertical.addView(ib);
+                    blockNumbers++;
                 }else{
                     ImageView ib = new ImageButton(this);
                     Bitmap b = decodeSampledBitmapFromResource(getResources(), R.drawable.block_black, blocksize, blocksize);
@@ -112,7 +178,7 @@ public class InGameActivity extends ActionBarActivity {
                     int id = 1000 + r * 10 + c;
                     ib.setId(id);
                     llVertical.addView(ib);
-
+                    blockNumbers++;
                 }
             }
 
@@ -128,13 +194,26 @@ public class InGameActivity extends ActionBarActivity {
         @Override
         public void onClick(final View v) {
             int blockID = v.getId();
+
             // validate move
             if(!arrayX.contains(blockID) && !arrayA.contains(blockID) && !arrayB.contains(blockID)) {
                 if (turn == 0) {
                     clickA = blockID;
+                    Log.d("Level: ", levelNumberString);
+                    Log.d("arrayA: ", arrayA.size() + " elements");
+                    Log.d("arrayB: ", arrayB.size() + " elements");
+                    Log.d("arrayD for case 1: ", arrayD.size() + " elements");
+                    Log.d("arrayX: ", arrayX.size() + " elements");
+                    Log.d("Total blocks: ", blockNumbers + " blocks");
                 }
                 if (turn == 1) {
                     clickB = blockID;
+                    Log.d("Level: ", levelNumberString);
+                    Log.d("arrayA: ", arrayA.size() + " elements");
+                    Log.d("arrayB: ", arrayB.size() + " elements");
+                    Log.d("arrayD for case 1: ", arrayD.size() + " elements");
+                    Log.d("arrayX: ", arrayX.size() + " elements");
+                    Log.d("Total blocks: ", blockNumbers + " blocks");
                 }
                 turn++;
 
@@ -162,13 +241,43 @@ public class InGameActivity extends ActionBarActivity {
                         BitmapDrawable bitmapDrawable3 = new BitmapDrawable(getResources(), b3);
                         ib3.setBackground(bitmapDrawable3);
                     }
+                    Log.d("Level: ", levelNumberString);
+                    Log.d("arrayA: ", arrayA.size() + " elements");
+                    Log.d("arrayB: ", arrayB.size() + " elements");
+                    Log.d("arrayD for case 1: ", arrayD.size() + " elements");
+                    Log.d("arrayX: ", arrayX.size() + " elements");
+                    Log.d("Total blocks: ", blockNumbers + " blocks");
                     turn = 0;
                 }
+            }
+
+            if(boardFull())
+            {
+                arrayA.clear();
+                arrayB.clear();
+                arrayD.clear();
+                arrayX.clear();
+                blockNumbers = 0;
+                Intent intent = new Intent(v.getContext(), PostGameActivity.class);
+                intent.putExtra("LevelNumber", levelNumberString);
+                intent.putExtra("ScoreA", scoreA);
+                intent.putExtra("ScoreB", scoreB);
+                scoreA = 0;
+                scoreB = 0;
+                clickA = 0;
+                clickB = 0;
+                startActivity(intent);
             }
 
            // Log.d( "test", v.getId() + "a");
         }
     };
+
+    public static boolean boardFull()
+    {
+        int usedAmountOfBlocks = arrayA.size() + arrayB.size() + arrayD.size() + arrayX.size();
+        return (blockNumbers==usedAmountOfBlocks);
+    }
 
     public static Bitmap decodeSampledBitmapFromResource(Resources res, int resId,
                                                          int reqWidth, int reqHeight) {
