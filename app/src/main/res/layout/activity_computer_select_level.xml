@@ -19,10 +19,10 @@
         android:background="@drawable/button_custom"
         android:onClick="selectLevelsComp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="40dp"
-        android:layout_below="@+id/compLevel2"
-        android:layout_alignLeft="@+id/compLevel2"
-        android:layout_alignStart="@+id/compLevel2" />
+        android:layout_marginTop="97dp"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/button"
+        android:layout_toStartOf="@+id/button" />
 
     <Button
         android:layout_width="wrap_content"
@@ -34,9 +34,11 @@
         android:background="@drawable/button_custom"
         android:onClick="selectLevelsComp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="41dp"
-        android:layout_below="@+id/compLevel3"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignTop="@+id/compLevel1"
+        android:layout_alignRight="@+id/compLevel3"
+        android:layout_alignEnd="@+id/compLevel3"
+        android:layout_marginRight="59dp"
+        android:layout_marginEnd="59dp" />
 
     <Button
         android:layout_width="wrap_content"
@@ -48,10 +50,41 @@
         android:background="@drawable/button_custom"
         android:onClick="selectLevelsComp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="106dp"
-        android:layout_alignParentTop="true"
+        android:layout_marginRight="57dp"
+        android:layout_marginEnd="57dp"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/compLevel5"
+        android:alpha="0.8"
+        android:text="Level 5"
+        android:textColor="@android:color/white"
+        android:background="@drawable/button_custom"
+        android:onClick="selectLevelsComp"
+        android:layout_gravity="center_horizontal"
+        android:layout_below="@+id/compLevel2"
         android:layout_alignLeft="@+id/compLevel2"
-        android:layout_alignStart="@+id/compLevel2" />
+        android:layout_alignStart="@+id/compLevel2"
+        android:layout_marginTop="29dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/compLevel4"
+        android:alpha="0.8"
+        android:text="Level 4"
+        android:textColor="@android:color/white"
+        android:background="@drawable/button_custom"
+        android:onClick="selectLevelsComp"
+        android:layout_gravity="center_horizontal"
+        android:layout_alignBottom="@+id/compLevel3"
+        android:layout_alignLeft="@+id/compLevel1"
+        android:layout_alignStart="@+id/compLevel1"
+        android:layout_marginBottom="49dp" />
 
 
 </RelativeLayout>

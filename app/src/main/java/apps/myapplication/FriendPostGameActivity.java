@@ -46,9 +46,25 @@ public class FriendPostGameActivity extends AppCompatActivity {
 
         TextView viewScoreA =  (TextView) findViewById(R.id.scorePA);
         TextView viewScoreB =  (TextView) findViewById(R.id.scorePB);
+        TextView displayWinner =  (TextView) findViewById(R.id.winner);
 
-        viewScoreA.setText("Player A: " + "\n" + scoreA);
-        viewScoreB.setText("Player B: " + "\n" + scoreB);
+        if(scoreA == scoreB)
+        {
+            displayWinner.setText("Tie! Nobody won or lost");
+        }
+
+        if(scoreA > scoreB)
+        {
+            displayWinner.setText("Player 1 won! :)");
+        }
+
+        if(scoreB > scoreA)
+        {
+            displayWinner.setText("Player 2 won! :)");
+        }
+
+        viewScoreA.setText("Player 1: " + "\n" + scoreA);
+        viewScoreB.setText("Player 2: " + "\n" + scoreB);
 
     }
 

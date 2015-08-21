@@ -58,9 +58,26 @@ public class ComputerPostGameActivity extends AppCompatActivity {
 
         TextView viewScoreA =  (TextView) findViewById(R.id.scorePA);
         TextView viewScoreB =  (TextView) findViewById(R.id.scorePB);
+        TextView displayWinner =  (TextView) findViewById(R.id.winner);
+
+        if(scoreA == scoreB)
+        {
+            displayWinner.setText("Tie! Nobody won or lost");
+        }
+
+        if(scoreA > scoreB)
+        {
+            displayWinner.setText("Good job, you won! :)");
+        }
+
+        if(scoreB > scoreA)
+        {
+            displayWinner.setText("Too bad, you lost! :(");
+        }
+
 
         viewScoreA.setText("Player A: " + "\n" + scoreA);
-        viewScoreB.setText("Player B: " + "\n" + scoreB);
+        viewScoreB.setText("Computer: " + "\n" + scoreB);
 
     }
 

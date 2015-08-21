@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -37,11 +38,11 @@ public class ComputerInGameActivity extends ActionBarActivity {
     // Level 2
     private static int[] arrayLevel2 = {5, 5, 22, 32, 34, 43, 44};
     // Level 3
-    private static int[] arrayLevel3 = {5, 5, 23, 32, 33, 34};
+    private static int[] arrayLevel3 = {5, 5, 21, 25, 42, 53, 55};
     // Level 4
-    private static int[] arrayLevel4 = {6, 6, 23, 32, 33, 34};
+    private static int[] arrayLevel4 = {6, 6, 16, 22, 23, 32, 45, 54, 55, 61};
     // Level 5
-    private static int[] arrayLevel5 = {6, 6, 23, 32, 33, 34};
+    private static int[] arrayLevel5 = {6, 6, 12, 14, 25, 32, 43, 45, 51, 63};
     // Width of the Level
     private static int levelWidth;
     // Length of the Level
@@ -64,13 +65,14 @@ public class ComputerInGameActivity extends ActionBarActivity {
     private static int blockNumbers;
     // Which level
     private static String levelNumberString;
+    private static int levelNumberInt;
     // Which difficulty (0 = easy, 1 = medium, 2 = hard)
     private static int difficulty = 0;
     private static String difficultyString = "Easy";
 
     // Score
-    private static  int scoreA =2;
-    private static  int scoreComp =1;
+    private static  int scoreA = 0;
+    private static  int scoreComp = 0;
 
     private static int clickA = 0;
     private static int clickComp = 0;
@@ -131,7 +133,7 @@ public class ComputerInGameActivity extends ActionBarActivity {
         levelNumberString = getIntent().getExtras().getString("LevelNumber");
         setTitle(levelNumberString);
         String numberString = levelNumberString.substring(levelNumberString.length() - 1);
-        int levelNumberInt = Integer.parseInt(numberString);
+        levelNumberInt = Integer.parseInt(numberString);
 
         /**
          * setup the map
@@ -168,6 +170,22 @@ public class ComputerInGameActivity extends ActionBarActivity {
                 for(int i = 2; i < arrayLevel3.length; i++)
                 {
                     arrayD.add(arrayLevel3[i]);
+                }
+                break;
+            case 4:
+                levelWidth = arrayLevel4[0];
+                levelLength = arrayLevel4[1];
+                for(int i = 2; i < arrayLevel4.length; i++)
+                {
+                    arrayD.add(arrayLevel4[i]);
+                }
+                break;
+            case 5:
+                levelWidth = arrayLevel5[0];
+                levelLength = arrayLevel5[1];
+                for(int i = 2; i < arrayLevel5.length; i++)
+                {
+                    arrayD.add(arrayLevel5[i]);
                 }
                 break;
             default:
@@ -310,7 +328,14 @@ public class ComputerInGameActivity extends ActionBarActivity {
                         BitmapDrawable bitmapDrawable3 = new BitmapDrawable(getResources(), b3);
                         ib3.setBackground(bitmapDrawable3);
                     }
+
                     compCanClick = true;
+                    calculateScores();
+                    TextView textViewPlayer = (TextView) findViewById(R.id.scorePlayerA);
+                    TextView textViewComputer = (TextView) findViewById(R.id.scorePlayerB);
+                    textViewPlayer.setText("Player 1: " + scoreA);
+                    textViewComputer.setText("Computer: " + scoreComp);
+
                     //Log.d("Level: ", levelNumberString);
                     Log.d("arrayA: ", arrayA.size() + " elements");
                     Log.d("arrayB: ", arrayB.size() + " elements");
@@ -324,6 +349,7 @@ public class ComputerInGameActivity extends ActionBarActivity {
 
             if(boardFull())
             {
+                calculateScores();
                 arrayA.clear();
                 arrayB.clear();
                 arrayD.clear();
@@ -351,6 +377,37 @@ public class ComputerInGameActivity extends ActionBarActivity {
         Random rand = new Random();
         int randomNum = rand.nextInt((max - min) + 1) + min;
         return randomNum;
+    }
+
+    public static void calculateScores()
+    {
+        switch(levelNumberInt)
+        {
+            case 1:
+                scoreA = TheScore.totalScore(arrayA, arrayLevel1[0], arrayLevel1[1]);
+                scoreComp = TheScore.totalScore(arrayB, arrayLevel1[0], arrayLevel1[1]);
+                break;
+            case 2:
+                scoreA = TheScore.totalScore(arrayA, arrayLevel2[0], arrayLevel2[1]);
+                scoreComp = TheScore.totalScore(arrayB, arrayLevel2[0], arrayLevel2[1]);
+                break;
+            case 3:
+                scoreA = TheScore.totalScore(arrayA, arrayLevel3[0], arrayLevel3[1]);
+                scoreComp = TheScore.totalScore(arrayB, arrayLevel3[0], arrayLevel3[1]);
+                break;
+            case 4:
+                scoreA = TheScore.totalScore(arrayA, arrayLevel4[0], arrayLevel4[1]);
+                scoreComp = TheScore.totalScore(arrayB, arrayLevel4[0], arrayLevel4[1]);
+                break;
+            case 5:
+                scoreA = TheScore.totalScore(arrayA, arrayLevel5[0], arrayLevel5[1]);
+                scoreComp = TheScore.totalScore(arrayB, arrayLevel5[0], arrayLevel5[1]);
+                break;
+            default:
+                scoreA = TheScore.totalScore(arrayA, arrayLevel1[0], arrayLevel1[1]);
+                scoreComp = TheScore.totalScore(arrayB, arrayLevel1[0], arrayLevel1[1]);
+                break;
+        }
     }
 
     public static ArrayList<Integer> neighbours(int block)

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -32,11 +34,15 @@ public class FriendInGameActivity extends ActionBarActivity {
      * Level Data (first two values is the width x length)
      **/
     // Level 1
-    private static int[] arrayLevel1 = {5, 5, 13, 14, 15, 23, 24, 52, 53};
+    private static int[] arrayLevel1 = {5, 5, 13, 14, 15, 24, 43, 52, 53};
     // Level 2
-    private static int[] arrayLevel2 = {5, 5, 11, 12, 15, 25, 33, 51, 52};
+    private static int[] arrayLevel2 = {5, 5, 22, 32, 34, 43, 44};
     // Level 3
-    private static int[] arrayLevel3 = {6, 6, 33, 12, 65, 23, 24, 62, 53};
+    private static int[] arrayLevel3 = {5, 5, 21, 25, 42, 53, 55};
+    // Level 4
+    private static int[] arrayLevel4 = {6, 6, 16, 22, 23, 32, 45, 54, 55, 61};
+    // Level 5
+    private static int[] arrayLevel5 = {6, 6, 12, 14, 25, 32, 43, 45, 51, 63};
     // Width of the Level
     private static int levelWidth;
     // Length of the Level
@@ -57,10 +63,11 @@ public class FriendInGameActivity extends ActionBarActivity {
     private static int blockNumbers;
     // Which level
     private static String levelNumberString;
+    private static int levelNumberInt;
 
     // Score
-    private static  int scoreA =2;
-    private static  int scoreB =1;
+    private static  int scoreA = 0;
+    private static  int scoreB = 0;
 
     private static int clickA = 0;
     private static int clickB = 0;
@@ -82,6 +89,7 @@ public class FriendInGameActivity extends ActionBarActivity {
         scoreB = 0;
         clickA = 0;
         clickB = 0;
+        turn = 0;
         blockNumbers = 0;
     }
 
@@ -102,7 +110,7 @@ public class FriendInGameActivity extends ActionBarActivity {
         levelNumberString = getIntent().getExtras().getString("LevelNumber");
         setTitle(levelNumberString);
         String numberString = levelNumberString.substring(levelNumberString.length() - 1);
-        int levelNumberInt = Integer.parseInt(numberString);
+        levelNumberInt = Integer.parseInt(numberString);
         
         /**
          * setup the map
@@ -112,7 +120,7 @@ public class FriendInGameActivity extends ActionBarActivity {
             case 1:
                 levelWidth = arrayLevel1[0];
                 levelLength = arrayLevel1[1];
-                for(int i = 2; i < 9; i++)
+                for(int i = 2; i < arrayLevel1.length; i++)
                 {
                     arrayD.add(arrayLevel1[i]);
                 }
@@ -127,7 +135,7 @@ public class FriendInGameActivity extends ActionBarActivity {
             case 2:
                 levelWidth = arrayLevel2[0];
                 levelLength = arrayLevel2[1];
-                for(int i = 2; i < 9; i++)
+                for(int i = 2; i < arrayLevel2.length; i++)
                 {
                     arrayD.add(arrayLevel2[i]);
                 }
@@ -135,18 +143,35 @@ public class FriendInGameActivity extends ActionBarActivity {
             case 3:
                 levelWidth = arrayLevel3[0];
                 levelLength = arrayLevel3[1];
-                for(int i = 2; i < 9; i++)
+                for(int i = 2; i < arrayLevel3.length; i++)
                 {
                     arrayD.add(arrayLevel3[i]);
+                }
+                break;
+            case 4:
+                levelWidth = arrayLevel4[0];
+                levelLength = arrayLevel4[1];
+                for(int i = 2; i < arrayLevel4.length; i++)
+                {
+                    arrayD.add(arrayLevel4[i]);
+                }
+                break;
+            case 5:
+                levelWidth = arrayLevel5[0];
+                levelLength = arrayLevel5[1];
+                for(int i = 2; i < arrayLevel5.length; i++)
+                {
+                    arrayD.add(arrayLevel5[i]);
                 }
                 break;
             default:
                 levelWidth = arrayLevel1[0];
                 levelLength = arrayLevel1[1];
-                for(int i = 2; i < 9; i++)
+                for(int i = 2; i < arrayLevel1.length; i++)
                 {
                     arrayD.add(arrayLevel1[i]);
                 }
+                break;
         }
 
         int blocksize = blockSize(levelWidth);
@@ -182,11 +207,20 @@ public class FriendInGameActivity extends ActionBarActivity {
             }
 
             llHorizontal.addView(llVertical);
+
+            // turn
+            TextView tv = (TextView) findViewById(R.id.playerAB);
+            if(turn == 0)
+            {
+                tv.setText("Orange");
+                tv.setTextColor(Color.parseColor("#ff9000"));
+            }
         }
 
 
 
     }
+
 
     private View.OnClickListener onClickListener = new View.OnClickListener() {
 
@@ -228,6 +262,13 @@ public class FriendInGameActivity extends ActionBarActivity {
                         BitmapDrawable bitmapDrawable3 = new BitmapDrawable(getResources(), b3);
                         ib3.setBackground(bitmapDrawable3);
                     }
+
+                    calculateScores();
+                    TextView textViewPlayer1 = (TextView) findViewById(R.id.scorePlayerA);
+                    TextView textViewPlayer2 = (TextView) findViewById(R.id.scorePlayerB);
+                    textViewPlayer1.setText("Player 1: " + scoreA);
+                    textViewPlayer2.setText("Player 2: " + scoreB);
+
                     Log.d("Level: ", levelNumberString);
                     Log.d("arrayA: ", arrayA.size() + " elements");
                     Log.d("arrayB: ", arrayB.size() + " elements");
@@ -236,15 +277,27 @@ public class FriendInGameActivity extends ActionBarActivity {
                     Log.d("Total blocks: ", blockNumbers + " blocks");
                     turn = 0;
                 }
+
+                TextView tv = (TextView) findViewById(R.id.playerAB);
+                if(turn == 0){
+                    tv.setText("Orange");
+                    tv.setTextColor(Color.parseColor("#ff9000"));
+                }
+                if(turn == 1){
+                    tv.setText("Blue");
+                    tv.setTextColor(Color.parseColor("#24c2da"));
+                }
             }
 
             if(boardFull())
             {
+                calculateScores();
                 arrayA.clear();
                 arrayB.clear();
                 arrayD.clear();
                 arrayX.clear();
                 blockNumbers = 0;
+                turn = 0;
                 Intent intent = new Intent(v.getContext(), FriendPostGameActivity.class);
                 intent.putExtra("LevelNumber", levelNumberString);
                 intent.putExtra("ScoreA", scoreA);
@@ -264,6 +317,37 @@ public class FriendInGameActivity extends ActionBarActivity {
     {
         int usedAmountOfBlocks = arrayA.size() + arrayB.size() + arrayD.size() + arrayX.size();
         return (blockNumbers==usedAmountOfBlocks);
+    }
+
+    public static void calculateScores()
+    {
+        switch(levelNumberInt)
+        {
+            case 1:
+                scoreA = TheScore.totalScore(arrayA, arrayLevel1[0], arrayLevel1[1]);
+                scoreB = TheScore.totalScore(arrayB, arrayLevel1[0], arrayLevel1[1]);
+                break;
+            case 2:
+                scoreA = TheScore.totalScore(arrayA, arrayLevel2[0], arrayLevel2[1]);
+                scoreB = TheScore.totalScore(arrayB, arrayLevel2[0], arrayLevel2[1]);
+                break;
+            case 3:
+                scoreA = TheScore.totalScore(arrayA, arrayLevel3[0], arrayLevel3[1]);
+                scoreB = TheScore.totalScore(arrayB, arrayLevel3[0], arrayLevel3[1]);
+                break;
+            case 4:
+                scoreA = TheScore.totalScore(arrayA, arrayLevel4[0], arrayLevel4[1]);
+                scoreB = TheScore.totalScore(arrayB, arrayLevel4[0], arrayLevel4[1]);
+                break;
+            case 5:
+                scoreA = TheScore.totalScore(arrayA, arrayLevel5[0], arrayLevel5[1]);
+                scoreB = TheScore.totalScore(arrayB, arrayLevel5[0], arrayLevel5[1]);
+                break;
+            default:
+                scoreA = TheScore.totalScore(arrayA, arrayLevel1[0], arrayLevel1[1]);
+                scoreB = TheScore.totalScore(arrayB, arrayLevel1[0], arrayLevel1[1]);
+                break;
+        }
     }
 
     public static Bitmap decodeSampledBitmapFromResource(Resources res, int resId,

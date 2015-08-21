@@ -71,5 +71,16 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="32dp" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Boe"
+        android:id="@+id/winner"
+        android:layout_marginTop="36dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignRight="@+id/imageButtonAgain"
+        android:layout_alignEnd="@+id/imageButtonAgain" />
+
 
 </RelativeLayout>
