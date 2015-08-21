@@ -25,7 +25,7 @@ public class FriendPostGameActivity extends AppCompatActivity {
     }
 
     public void selectLevel(View view) {
-        Intent intent = new Intent(this, FriendLevelsOverview.class);
+        Intent intent = new Intent(this, FriendSelectLevelTemp.class);
         startActivity(intent);
     }
 

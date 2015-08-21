@@ -40,7 +40,7 @@ public class FriendInGameActivity extends ActionBarActivity {
     // Level 3
     private static int[] arrayLevel3 = {5, 5, 21, 25, 42, 53, 55};
     // Level 4
-    private static int[] arrayLevel4 = {6, 6, 16, 22, 23, 32, 45, 54, 55, 61};
+    private static int[] arrayLevel4 = {6, 6, 16, 22, 23, 32, 34, 35, 45, 61};
     // Level 5
     private static int[] arrayLevel5 = {6, 6, 12, 14, 25, 32, 43, 45, 51, 63};
     // Width of the Level
@@ -75,46 +75,8 @@ public class FriendInGameActivity extends ActionBarActivity {
     // turn A(0) B(1) or Done(2)
     private static int turn = 0;
 
-    @Override
-    protected void onStop(){
-        super.onStop();
-        if (mediaPlayer != null) {
-            mediaPlayer.stop();
-        }
-        arrayA.clear();
-        arrayB.clear();
-        arrayD.clear();
-        arrayX.clear();
-        scoreA = 0;
-        scoreB = 0;
-        clickA = 0;
-        clickB = 0;
-        turn = 0;
-        blockNumbers = 0;
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_friend_in_game);
-        toolbar = (Toolbar) findViewById(R.id.tool_bar);
-        setSupportActionBar(toolbar);
-
-        //start media
-        if (mediaPlayer == null){
-            mediaPlayer = MediaPlayer.create(this, R.raw.carefree);
-            mediaPlayer.isLooping();
-            mediaPlayer.start();
-        }
-
-        levelNumberString = getIntent().getExtras().getString("LevelNumber");
-        setTitle(levelNumberString);
-        String numberString = levelNumberString.substring(levelNumberString.length() - 1);
-        levelNumberInt = Integer.parseInt(numberString);
-        
-        /**
-         * setup the map
-         */
+    public static void boardHoles()
+    {
         switch(levelNumberInt)
         {
             case 1:
@@ -164,6 +126,14 @@ public class FriendInGameActivity extends ActionBarActivity {
                     arrayD.add(arrayLevel5[i]);
                 }
                 break;
+            case 6:
+                break;
+            case 7:
+                break;
+            case 8:
+                break;
+            case 9:
+                break;
             default:
                 levelWidth = arrayLevel1[0];
                 levelLength = arrayLevel1[1];
@@ -173,6 +143,50 @@ public class FriendInGameActivity extends ActionBarActivity {
                 }
                 break;
         }
+    }
+
+    @Override
+    protected void onStop(){
+        super.onStop();
+        if (mediaPlayer != null) {
+            mediaPlayer.stop();
+        }
+        arrayA.clear();
+        arrayB.clear();
+        arrayD.clear();
+        arrayX.clear();
+        scoreA = 0;
+        scoreB = 0;
+        clickA = 0;
+        clickB = 0;
+        turn = 0;
+        blockNumbers = 0;
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_friend_in_game);
+        toolbar = (Toolbar) findViewById(R.id.tool_bar);
+        setSupportActionBar(toolbar);
+
+        //start media
+        if (mediaPlayer == null){
+            mediaPlayer = MediaPlayer.create(this, R.raw.carefree);
+            mediaPlayer.isLooping();
+            mediaPlayer.start();
+        }
+
+        levelNumberString = getIntent().getExtras().getString("LevelNumber");
+        setTitle(levelNumberString);
+        String numberString = levelNumberString.substring(levelNumberString.length() - 1);
+        levelNumberInt = Integer.parseInt(numberString);
+        
+        /**
+         * setup the map
+         */
+
+        boardHoles();
 
         int blocksize = blockSize(levelWidth);
 
@@ -342,6 +356,14 @@ public class FriendInGameActivity extends ActionBarActivity {
             case 5:
                 scoreA = TheScore.totalScore(arrayA, arrayLevel5[0], arrayLevel5[1]);
                 scoreB = TheScore.totalScore(arrayB, arrayLevel5[0], arrayLevel5[1]);
+                break;
+            case 6:
+                break;
+            case 7:
+                break;
+            case 8:
+                break;
+            case 9:
                 break;
             default:
                 scoreA = TheScore.totalScore(arrayA, arrayLevel1[0], arrayLevel1[1]);

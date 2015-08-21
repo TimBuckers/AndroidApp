@@ -82,6 +82,76 @@ public class ComputerInGameActivity extends ActionBarActivity {
     // turn A(0) B(1) or Done(2)
     private static int turn = 0;
 
+    public static void boardHoles()
+    {
+        switch(levelNumberInt)
+        {
+            case 1:
+                levelWidth = arrayLevel1[0];
+                levelLength = arrayLevel1[1];
+                for(int i = 2; i < arrayLevel1.length; i++)
+                {
+                    arrayD.add(arrayLevel1[i]);
+                }
+                /*
+                Log.d("Level: ", levelNumberString);
+                Log.d("arrayA: ", arrayA.size() + " elements");
+                Log.d("arrayB: ", arrayB.size() + " elements");
+                Log.d("arrayD for case 1: ", arrayD.size() + " elements");
+                Log.d("arrayX: ", arrayX.size() + " elements");
+                Log.d("Total blocks: ", blockNumbers + " blocks");*/
+                break;
+            case 2:
+                levelWidth = arrayLevel2[0];
+                levelLength = arrayLevel2[1];
+                for(int i = 2; i < arrayLevel2.length; i++)
+                {
+                    arrayD.add(arrayLevel2[i]);
+                }
+                break;
+            case 3:
+                levelWidth = arrayLevel3[0];
+                levelLength = arrayLevel3[1];
+                for(int i = 2; i < arrayLevel3.length; i++)
+                {
+                    arrayD.add(arrayLevel3[i]);
+                }
+                break;
+            case 4:
+                levelWidth = arrayLevel4[0];
+                levelLength = arrayLevel4[1];
+                for(int i = 2; i < arrayLevel4.length; i++)
+                {
+                    arrayD.add(arrayLevel4[i]);
+                }
+                break;
+            case 5:
+                levelWidth = arrayLevel5[0];
+                levelLength = arrayLevel5[1];
+                for(int i = 2; i < arrayLevel5.length; i++)
+                {
+                    arrayD.add(arrayLevel5[i]);
+                }
+                break;
+            case 6:
+                break;
+            case 7:
+                break;
+            case 8:
+                break;
+            case 9:
+                break;
+            default:
+                levelWidth = arrayLevel1[0];
+                levelLength = arrayLevel1[1];
+                for(int i = 2; i < arrayLevel1.length; i++)
+                {
+                    arrayD.add(arrayLevel1[i]);
+                }
+                break;
+        }
+    }
+
     @Override
     protected void onStop(){
         super.onStop();
@@ -139,65 +209,7 @@ public class ComputerInGameActivity extends ActionBarActivity {
          * setup the map
          */
 
-        switch(levelNumberInt)
-        {
-            case 1:
-                levelWidth = arrayLevel1[0];
-                levelLength = arrayLevel1[1];
-                for(int i = 2; i < arrayLevel1.length; i++)
-                {
-                    arrayD.add(arrayLevel1[i]);
-                }
-                /*
-                Log.d("Level: ", levelNumberString);
-                Log.d("arrayA: ", arrayA.size() + " elements");
-                Log.d("arrayB: ", arrayB.size() + " elements");
-                Log.d("arrayD for case 1: ", arrayD.size() + " elements");
-                Log.d("arrayX: ", arrayX.size() + " elements");
-                Log.d("Total blocks: ", blockNumbers + " blocks");*/
-                break;
-            case 2:
-                levelWidth = arrayLevel2[0];
-                levelLength = arrayLevel2[1];
-                for(int i = 2; i < arrayLevel2.length; i++)
-                {
-                    arrayD.add(arrayLevel2[i]);
-                }
-                break;
-            case 3:
-                levelWidth = arrayLevel3[0];
-                levelLength = arrayLevel3[1];
-                for(int i = 2; i < arrayLevel3.length; i++)
-                {
-                    arrayD.add(arrayLevel3[i]);
-                }
-                break;
-            case 4:
-                levelWidth = arrayLevel4[0];
-                levelLength = arrayLevel4[1];
-                for(int i = 2; i < arrayLevel4.length; i++)
-                {
-                    arrayD.add(arrayLevel4[i]);
-                }
-                break;
-            case 5:
-                levelWidth = arrayLevel5[0];
-                levelLength = arrayLevel5[1];
-                for(int i = 2; i < arrayLevel5.length; i++)
-                {
-                    arrayD.add(arrayLevel5[i]);
-                }
-                break;
-            default:
-                levelWidth = arrayLevel1[0];
-                levelLength = arrayLevel1[1];
-                for(int i = 2; i < arrayLevel1.length; i++)
-                {
-                    arrayD.add(arrayLevel1[i]);
-                }
-                break;
-        }
-
+        boardHoles();
 
         int blocksize = blockSize(levelWidth);
 
@@ -402,6 +414,14 @@ public class ComputerInGameActivity extends ActionBarActivity {
             case 5:
                 scoreA = TheScore.totalScore(arrayA, arrayLevel5[0], arrayLevel5[1]);
                 scoreComp = TheScore.totalScore(arrayB, arrayLevel5[0], arrayLevel5[1]);
+                break;
+            case 6:
+                break;
+            case 7:
+                break;
+            case 8:
+                break;
+            case 9:
                 break;
             default:
                 scoreA = TheScore.totalScore(arrayA, arrayLevel1[0], arrayLevel1[1]);

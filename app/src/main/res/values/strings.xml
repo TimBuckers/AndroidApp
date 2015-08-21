@@ -11,6 +11,7 @@
     <string name="title_activity_computer_select_difficulty">ComputerSelectDifficultyActivity</string>
     <string name="title_activity_computer_post_game">ComputerPostGameActivity</string>
     <string name="title_activity_computer_select_level">ComputerSelectLevelActivity</string>
+    <string name="title_activity_friend_select_level_temp">FriendSelectLevelTemp</string>
 
 
 </resources>

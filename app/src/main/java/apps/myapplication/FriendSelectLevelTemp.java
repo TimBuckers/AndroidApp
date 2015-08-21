@@ -1,30 +1,30 @@
 package apps.myapplication;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 
-public class HomeScreenActivity extends AppCompatActivity {
+public class FriendSelectLevelTemp extends AppCompatActivity {
 
-    public void vsFriend(View view) {
-        Intent intent = new Intent(this, FriendSelectLevelTemp.class);
-        startActivity(intent);
-    }
 
-    public void vsComputer(View view) {
-        Intent intent = new Intent(this, ComputerSelectDifficultyActivity.class);
+    public void selectLevelsComp(View view) {
+        Intent intent = new Intent(this, FriendInGameActivity.class);
+        Button button = (Button) findViewById(view.getId());
+        String buttonText = (String) button.getText();
+        intent.putExtra("LevelNumber", buttonText);
         startActivity(intent);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home_screen);
+        setContentView(R.layout.activity_friend_select_level_temp);
 
         ImageView imageView = (ImageView) findViewById(R.id.imageView);
         DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
@@ -33,13 +33,12 @@ public class HomeScreenActivity extends AppCompatActivity {
         }else{
             imageView.setImageDrawable(getResources().getDrawable(R.drawable.homescreen_background_long));
         }
-
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_select_difficulty, menu);
         return true;
     }
 
@@ -57,5 +56,4 @@ public class HomeScreenActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
 }
