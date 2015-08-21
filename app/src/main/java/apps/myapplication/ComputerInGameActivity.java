@@ -19,11 +19,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * Created by Tim on 8/19/2015.
  */
-public class InGameActivity extends ActionBarActivity {
+public class ComputerInGameActivity extends ActionBarActivity {
     private Toolbar toolbar;
     MediaPlayer mediaPlayer = null;
 
@@ -53,17 +54,24 @@ public class InGameActivity extends ActionBarActivity {
     private static ArrayList<Integer> arrayX = new ArrayList<Integer>();
     // array with disabled blocks map
     private static ArrayList<Integer> arrayD = new ArrayList<Integer>();
+    // array with all available blocks in the map
+    private static ArrayList<Integer> arrayAll = new ArrayList<Integer>();
     // Total amount of blocks
     private static int blockNumbers;
     // Which level
     private static String levelNumberString;
+    // Which difficulty (0 = easy, 1 = medium, 2 = hard)
+    private static int difficulty = 0;
+    private static String difficultyString = "Easy";
 
     // Score
     private static  int scoreA =2;
-    private static  int scoreB =1;
+    private static  int scoreComp =1;
 
     private static int clickA = 0;
-    private static int clickB = 0;
+    private static int clickComp = 0;
+    private static boolean firstClickComp = true;
+    private static boolean compCanClick = true;
 
     // turn A(0) B(1) or Done(2)
     private static int turn = 0;
@@ -78,35 +86,53 @@ public class InGameActivity extends ActionBarActivity {
         arrayB.clear();
         arrayD.clear();
         arrayX.clear();
+        arrayAll.clear();
         scoreA = 0;
-        scoreB = 0;
+        scoreComp = 0;
         clickA = 0;
-        clickB = 0;
+        clickComp = 0;
         blockNumbers = 0;
+        firstClickComp = true;
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_in_game);
+        setContentView(R.layout.activity_computer_in_game);
         toolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
 
+        String computerDifficulty = getIntent().getExtras().getString("Difficulty");
+        difficultyString = computerDifficulty;
+        if(computerDifficulty.equals("Medium"))
+        {
+            difficulty = 1;
+        }
+        if(computerDifficulty.equals("Hard"))
+        {
+            difficulty = 2;
+        }
+
+        Log.d("Difficulty: ", difficulty + "...");
+
         //start media
+        /*
         if (mediaPlayer == null){
             mediaPlayer = MediaPlayer.create(this, R.raw.carefree);
             mediaPlayer.isLooping();
             mediaPlayer.start();
         }
+        */
 
         levelNumberString = getIntent().getExtras().getString("LevelNumber");
         setTitle(levelNumberString);
         String numberString = levelNumberString.substring(levelNumberString.length() - 1);
         int levelNumberInt = Integer.parseInt(numberString);
-        
+
         /**
          * setup the map
          */
+
         switch(levelNumberInt)
         {
             case 1:
@@ -147,7 +173,9 @@ public class InGameActivity extends ActionBarActivity {
                 {
                     arrayD.add(arrayLevel1[i]);
                 }
+                break;
         }
+
 
         int blocksize = blockSize(levelWidth);
 
@@ -168,6 +196,7 @@ public class InGameActivity extends ActionBarActivity {
                     ib.setOnClickListener(onClickListener);
                     ib.setId(id);
                     llVertical.addView(ib);
+                    arrayAll.add(id);
                     blockNumbers++;
                 }else{
                     ImageView ib = new ImageButton(this);
@@ -198,41 +227,81 @@ public class InGameActivity extends ActionBarActivity {
             if(!arrayX.contains(blockID) && !arrayA.contains(blockID) && !arrayB.contains(blockID)) {
                 if (turn == 0) {
                     clickA = blockID;
-                }
-                if (turn == 1) {
-                    clickB = blockID;
+                    if(firstClickComp)
+                    {
+                        clickComp = arrayAll.get(randomInt(0, arrayAll.size() - 1));
+                        firstClickComp = false;
+                    }
+                    else
+                    {
+                        switch(difficulty)
+                        {
+                            case 0:
+                                clickComp = arrayAll.get(randomInt(0, arrayAll.size() - 1));
+                                break;
+                            case 1:
+                                ArrayList<Integer> neighbours = neighbours(clickComp);
+                                for(int i = 0; i < neighbours.size(); i++)
+                                {
+                                    int index = randomInt(0, neighbours.size() - 1);
+                                    if(arrayAll.contains(neighbours.get(new Integer(index))) && compCanClick)
+                                    {
+                                        clickComp = neighbours.get(new Integer(index));
+                                        compCanClick = false;
+                                    }
+                                    neighbours.remove(new Integer(index));
+                                }
+                                if(compCanClick)
+                                {
+                                    clickComp = arrayAll.get(randomInt(0, arrayAll.size() - 1));
+                                    compCanClick = false;
+                                }
+                                break;
+                            case 2:
+                                clickComp = arrayAll.get(randomInt(0, arrayAll.size() - 1));
+                                break;
+                            default:
+                                clickComp = arrayAll.get(randomInt(0, arrayAll.size() - 1));
+                                break;
+                        }
+                    }
+
                 }
                 turn++;
 
-                if (turn == 2) {
-                    if (clickA == clickB) {
+                if (turn == 1) {
+                    if (clickA == clickComp) {
                         arrayX.add(clickA);
-
+                        arrayAll.remove(new Integer(clickA));
                         ImageButton ib1 = (ImageButton) findViewById(clickA);
-                        Bitmap b1 = decodeSampledBitmapFromResource(getResources(), R.drawable.block_black, blockSize(5), blockSize(5));
+                        Bitmap b1 = decodeSampledBitmapFromResource(getResources(), R.drawable.block_black, blockSize(levelWidth), blockSize(levelWidth));
                         BitmapDrawable bitmapDrawable1 = new BitmapDrawable(getResources(), b1);
                         ib1.setBackground(bitmapDrawable1);
 
                     } else {
                         arrayA.add(clickA);
                         Log.d("test", "clickA: " + clickA);
+                        arrayAll.remove(new Integer(clickA));
                         ImageButton ib2 = (ImageButton) findViewById(clickA);
-                        Bitmap b2 = decodeSampledBitmapFromResource(getResources(), R.drawable.orange, blockSize(5), blockSize(5));
+                        Bitmap b2 = decodeSampledBitmapFromResource(getResources(), R.drawable.orange, blockSize(levelWidth), blockSize(levelWidth));
                         BitmapDrawable bitmapDrawable2 = new BitmapDrawable(getResources(), b2);
                         ib2.setBackground(bitmapDrawable2);
 
-                        arrayB.add(clickB);
-                        Log.d("test", "clickB: " + clickB);
-                        ImageButton ib3 = (ImageButton) findViewById(clickB);
-                        Bitmap b3 = decodeSampledBitmapFromResource(getResources(), R.drawable.purple, blockSize(5), blockSize(5));
+                        arrayB.add(clickComp);
+                        Log.d("test", "clickB: " + clickComp);
+                        arrayAll.remove(new Integer(clickComp));
+                        ImageButton ib3 = (ImageButton) findViewById(clickComp);
+                        Bitmap b3 = decodeSampledBitmapFromResource(getResources(), R.drawable.purple, blockSize(levelWidth), blockSize(levelWidth));
                         BitmapDrawable bitmapDrawable3 = new BitmapDrawable(getResources(), b3);
                         ib3.setBackground(bitmapDrawable3);
                     }
-                    Log.d("Level: ", levelNumberString);
+                    compCanClick = true;
+                    //Log.d("Level: ", levelNumberString);
                     Log.d("arrayA: ", arrayA.size() + " elements");
                     Log.d("arrayB: ", arrayB.size() + " elements");
-                    Log.d("arrayD for case 1: ", arrayD.size() + " elements");
+                    Log.d("arrayD: ", arrayD.size() + " elements");
                     Log.d("arrayX: ", arrayX.size() + " elements");
+                    Log.d("arrayAll: ", arrayAll.size() + " elements");
                     Log.d("Total blocks: ", blockNumbers + " blocks");
                     turn = 0;
                 }
@@ -244,21 +313,52 @@ public class InGameActivity extends ActionBarActivity {
                 arrayB.clear();
                 arrayD.clear();
                 arrayX.clear();
+                arrayAll.clear();
                 blockNumbers = 0;
-                Intent intent = new Intent(v.getContext(), PostGameFriendActivity.class);
+                Intent intent = new Intent(v.getContext(), ComputerPostGameActivity.class);
                 intent.putExtra("LevelNumber", levelNumberString);
                 intent.putExtra("ScoreA", scoreA);
-                intent.putExtra("ScoreB", scoreB);
+                intent.putExtra("ScoreB", scoreComp);
+                intent.putExtra("Difficulty", difficultyString);
                 scoreA = 0;
-                scoreB = 0;
+                scoreComp = 0;
                 clickA = 0;
-                clickB = 0;
+                clickComp = 0;
+                firstClickComp = true;
                 startActivity(intent);
             }
 
-           // Log.d( "test", v.getId() + "a");
+            // Log.d( "test", v.getId() + "a");
         }
     };
+
+    public static int randomInt(int min, int max) {
+        Random rand = new Random();
+        int randomNum = rand.nextInt((max - min) + 1) + min;
+        return randomNum;
+    }
+
+    public static ArrayList<Integer> neighbours(int block)
+    {
+        ArrayList<Integer> res = new ArrayList<Integer>();
+        int temp = block - 11;
+        res.add(temp);
+        temp = block - 10;
+        res.add(temp);
+        temp = block - 9;
+        res.add(temp);
+        temp = block - 1;
+        res.add(temp);
+        temp = block + 1;
+        res.add(temp);
+        temp = block + 9;
+        res.add(temp);
+        temp = block + 10;
+        res.add(temp);
+        temp = block + 11;
+        res.add(temp);
+        return res;
+    }
 
     public static boolean boardFull()
     {

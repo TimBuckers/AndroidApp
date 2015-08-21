@@ -8,11 +8,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-public class SelectLevelActivity extends ActionBarActivity {
+public class FriendSelectLevelActivity extends ActionBarActivity {
     private Toolbar toolbar;
 
     public void inGame(View view) {
-        Intent intent = new Intent(this, InGameActivity.class);
+        Intent intent = new Intent(this, FriendInGameActivity.class);
 
         startActivity(intent);
     }
@@ -20,7 +20,7 @@ public class SelectLevelActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_select_level);
+        setContentView(R.layout.activity_friend_select_level);
         toolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
     }

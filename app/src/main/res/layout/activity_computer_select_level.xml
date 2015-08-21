@@ -1,0 +1,57 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="apps.myapplication.FriendPostGameActivity">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        android:id="@+id/imageView"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/compLevel1"
+        android:alpha="0.8"
+        android:text="Level 1"
+        android:textColor="@android:color/white"
+        android:background="@drawable/button_custom"
+        android:onClick="selectLevelsComp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="40dp"
+        android:layout_below="@+id/compLevel2"
+        android:layout_alignLeft="@+id/compLevel2"
+        android:layout_alignStart="@+id/compLevel2" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/compLevel2"
+        android:alpha="0.8"
+        android:text="Level 2"
+        android:textColor="@android:color/white"
+        android:background="@drawable/button_custom"
+        android:onClick="selectLevelsComp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="41dp"
+        android:layout_below="@+id/compLevel3"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/compLevel3"
+        android:alpha="0.8"
+        android:text="Level 3"
+        android:textColor="@android:color/white"
+        android:background="@drawable/button_custom"
+        android:onClick="selectLevelsComp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="106dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignLeft="@+id/compLevel2"
+        android:layout_alignStart="@+id/compLevel2" />
+
+
+</RelativeLayout>

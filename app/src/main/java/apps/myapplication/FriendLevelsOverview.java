@@ -12,17 +12,16 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 
-public class LevelsOverview extends FragmentActivity {
+public class FriendLevelsOverview extends FragmentActivity {
 
    AppSectionsPagerAdapter mAppSectionsPagerAdapter;
     ViewPager mViewPager;
     static String[] titles = {"1", "2", "3"};
 
     public void inGame(View view) {
-        Intent intent = new Intent(this, InGameActivity.class);
+        Intent intent = new Intent(this, FriendInGameActivity.class);
         Button button = (Button) findViewById(view.getId());
         String buttonText = (String) button.getText();
         intent.putExtra("LevelNumber", buttonText);
@@ -32,7 +31,7 @@ public class LevelsOverview extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_levels_overview);
+        setContentView(R.layout.activity_friend_levels_overview);
 
 
         ImageView imageView = (ImageView) findViewById(R.id.imageView);

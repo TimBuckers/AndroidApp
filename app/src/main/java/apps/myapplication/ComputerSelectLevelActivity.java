@@ -10,20 +10,26 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
-public class SelectDifficultyActivity extends AppCompatActivity {
+public class ComputerSelectLevelActivity extends AppCompatActivity {
+
+    public static String difficulty;
 
     public void selectLevelsComp(View view) {
-        Intent intent = new Intent(this, VersusComputerActivity.class);
+        Intent intent = new Intent(this, ComputerInGameActivity.class);
         Button button = (Button) findViewById(view.getId());
         String buttonText = (String) button.getText();
-        intent.putExtra("Difficulty", buttonText);
+        intent.putExtra("LevelNumber", buttonText);
+        intent.putExtra("Difficulty", difficulty);
         startActivity(intent);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_select_difficulty);
+        setContentView(R.layout.activity_computer_select_level);
+
+        String computerDifficulty = getIntent().getExtras().getString("Difficulty");
+        difficulty = computerDifficulty;
 
         ImageView imageView = (ImageView) findViewById(R.id.imageView);
         DisplayMetrics displayMetrics = getResources().getDisplayMetrics();

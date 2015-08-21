@@ -17,32 +17,36 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".SelectLevelActivity"
-            android:label="@string/title_activity_select_level" >
+            android:name=".FriendSelectLevelActivity"
+            android:label="@string/title_activity_friend_select_level" >
         </activity>
         <activity
-            android:name=".InGameActivity"
-            android:label="@string/title_activity_in_game_activity" >
+            android:name=".FriendInGameActivity"
+            android:label="@string/title_activity_friend_in_game" >
         </activity>
         <activity
-            android:name=".LevelsOverview"
-            android:label="@string/title_activity_levels_overview" >
+            android:name=".FriendLevelsOverview"
+            android:label="@string/title_activity_friend_levels_overview" >
         </activity>
         <activity
-            android:name=".PostGameFriendActivity"
-            android:label="@string/title_activity_post_game" >
+            android:name=".FriendPostGameActivity"
+            android:label="@string/title_activity_friend_post_game" >
         </activity>
         <activity
-            android:name=".VersusComputerActivity"
-            android:label="@string/title_activity_versus_computer" >
+            android:name=".ComputerInGameActivity"
+            android:label="@string/title_activity_computer_in_game" >
         </activity>
         <activity
-            android:name=".SelectDifficultyActivity"
-            android:label="@string/title_activity_select_difficulty" >
+            android:name=".ComputerSelectDifficultyActivity"
+            android:label="@string/title_activity_computer_select_difficulty" >
         </activity>
         <activity
-            android:name=".PostGameComputerActivity"
-            android:label="@string/title_activity_post_game_computer" >
+            android:name=".ComputerPostGameActivity"
+            android:label="@string/title_activity_computer_post_game" >
+        </activity>
+        <activity
+            android:name=".ComputerSelectLevelActivity"
+            android:label="@string/title_activity_computer_select_level" >
         </activity>
     </application>
 
