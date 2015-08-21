@@ -261,46 +261,7 @@ public class ComputerInGameActivity extends ActionBarActivity {
             if(!arrayX.contains(blockID) && !arrayA.contains(blockID) && !arrayB.contains(blockID)) {
                 if (turn == 0) {
                     clickA = blockID;
-                    if(firstClickComp)
-                    {
-                        clickComp = arrayAll.get(randomInt(0, arrayAll.size() - 1));
-                        firstClickComp = false;
-                    }
-                    else
-                    {
-                        switch(difficulty)
-                        {
-                            case 0:
-                                clickComp = arrayAll.get(randomInt(0, arrayAll.size() - 1));
-                                break;
-                            case 1:
-                                ArrayList<Integer> neighbours = neighbours(clickComp);
-                                for(int i = 0; i < neighbours.size(); i++)
-                                {
-                                    int index = randomInt(0, neighbours.size() - 1);
-                                    if(arrayAll.contains(neighbours.get(index)) && compCanClick)
-                                    {
-                                        clickComp = neighbours.get(index);
-                                        compCanClick = false;
-                                    }
-                                    neighbours.remove(index);
-                                }
-                                if(compCanClick)
-                                {
-                                    clickComp = arrayAll.get(randomInt(0, arrayAll.size() - 1));
-                                    compCanClick = false;
-                                }
-                                neighbours.clear();
-                                break;
-                            case 2:
-                                clickComp = arrayAll.get(randomInt(0, arrayAll.size() - 1));
-                                break;
-                            default:
-                                clickComp = arrayAll.get(randomInt(0, arrayAll.size() - 1));
-                                break;
-                        }
-                    }
-
+                    computerMove();
                 }
                 turn++;
 
@@ -385,10 +346,117 @@ public class ComputerInGameActivity extends ActionBarActivity {
         }
     };
 
-    public static int randomInt(int min, int max) {
-        Random rand = new Random();
-        int randomNum = rand.nextInt((max - min) + 1) + min;
-        return randomNum;
+    public static void computerMove()
+    {
+        boolean secondClickComp = false;
+        // First move of the computer is always random
+        if(firstClickComp)
+        {
+            clickComp = arrayAll.get(randomInt(0, arrayAll.size() - 1));
+            firstClickComp = false;
+            secondClickComp = true;
+        }
+        else
+        {
+            switch(difficulty)
+            {
+                // Easy computer sets random moves
+                case 0:
+                    clickComp = arrayAll.get(randomInt(0, arrayAll.size() - 1));
+                    break;
+                // Medium computer selects neighbours
+                case 1:
+                    ArrayList<Integer> neighbours = neighbours(clickComp);
+                    for(int i = 0; i < neighbours.size(); i++)
+                    {
+                        int index = randomInt(0, neighbours.size() - 1);
+                        if(arrayAll.contains(neighbours.get(index)) && compCanClick)
+                        {
+                            clickComp = neighbours.get(index);
+                            compCanClick = false;
+                        }
+                        neighbours.remove(index);
+                    }
+                    if(compCanClick)
+                    {
+                        clickComp = arrayAll.get(randomInt(0, arrayAll.size() - 1));
+                        compCanClick = false;
+                    }
+                    neighbours.clear();
+                    break;
+                // Hard computer should be smart and make the best move possible
+                case 2:
+                    if(secondClickComp)
+                    {
+                        ArrayList<Integer> neighbours2 = neighbours(clickComp);
+                        for(int i = 0; i < neighbours2.size(); i++)
+                        {
+                            int index = randomInt(0, neighbours2.size() - 1);
+                            if(arrayAll.contains(neighbours2.get(index)))
+                            {
+                                clickComp = neighbours2.get(index);
+                                compCanClick = false;
+                            }
+                            neighbours2.remove(index);
+                        }
+                        secondClickComp = false;
+                    }
+                    ArrayList<Integer>[] combinations = combinationOfArray();
+                    for(int i = 0; i < combinations.length; i++)
+                    {
+                        if(combinations[i].size() != 0)
+                        {
+                            ThreeRow temp = new ThreeRow(combinations[i].get(0), combinations[i].get(1));
+                            int[] possibleBlocks = temp.calcOptions();
+                            if((possibleBlocks != null) && arrayAll.contains(new Integer(possibleBlocks[0])))
+                            {
+                                clickComp = possibleBlocks[0];
+                                compCanClick = false;
+                            }
+                            else if((possibleBlocks != null) && arrayAll.contains(new Integer(possibleBlocks[1])))
+                            {
+                                clickComp = possibleBlocks[1];
+                                compCanClick = false;
+                            }
+                            if(compCanClick)
+                            {
+                                clickComp = arrayAll.get(randomInt(0, arrayAll.size() - 1));
+                                compCanClick = false;
+                            }
+                        }
+                    }
+                    break;
+                default:
+                    clickComp = arrayAll.get(randomInt(0, arrayAll.size() - 1));
+                    break;
+            }
+        }
+    }
+
+    public static ArrayList<Integer>[] combinationOfArray()
+    {
+        ArrayList<Integer>[] res2 = new ArrayList[500];
+        for(int i = 0; i < res2.length; i++)
+        {
+            res2[i] = new ArrayList<Integer>();
+        }
+
+        int index3 = 0;
+
+        for(int index1 = 0; index1 < arrayB.size(); index1++)
+        {
+            for(int index2 = 0; index2 < arrayB.size(); index2++)
+            {
+                int block1 = arrayB.get(index1);
+                int block2 = arrayB.get(index2);
+                res2[index3].add(block1);
+                res2[index3].add(block2);
+                index3++;
+            }
+        }
+
+        return res2;
+
     }
 
     public static void calculateScores()
@@ -473,6 +541,7 @@ public class ComputerInGameActivity extends ActionBarActivity {
         options.inJustDecodeBounds = false;
         return BitmapFactory.decodeResource(res, resId, options);
     }
+
     public static int calculateInSampleSize(
             BitmapFactory.Options options, int reqWidth, int reqHeight) {
         // Raw height and width of image
@@ -509,6 +578,12 @@ public class ComputerInGameActivity extends ActionBarActivity {
         }
     }
 
+    public static int randomInt(int min, int max) {
+        Random rand = new Random();
+        int randomNum = rand.nextInt((max - min) + 1) + min;
+        return randomNum;
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -533,3 +608,4 @@ public class ComputerInGameActivity extends ActionBarActivity {
     }
 
 }
+
