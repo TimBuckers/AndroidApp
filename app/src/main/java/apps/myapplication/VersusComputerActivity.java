@@ -71,6 +71,8 @@ public class VersusComputerActivity extends ActionBarActivity {
 
     private static int clickA = 0;
     private static int clickComp = 0;
+    private static boolean firstClickComp = true;
+    private static boolean compCanClick = true;
 
     // turn A(0) B(1) or Done(2)
     private static int turn = 0;
@@ -91,6 +93,7 @@ public class VersusComputerActivity extends ActionBarActivity {
         clickA = 0;
         clickComp = 0;
         blockNumbers = 0;
+        firstClickComp = true;
     }
 
     @Override
@@ -171,6 +174,7 @@ public class VersusComputerActivity extends ActionBarActivity {
                 {
                     arrayD.add(arrayLevel1[i]);
                 }
+                break;
         }
 
 
@@ -224,7 +228,45 @@ public class VersusComputerActivity extends ActionBarActivity {
             if(!arrayX.contains(blockID) && !arrayA.contains(blockID) && !arrayB.contains(blockID)) {
                 if (turn == 0) {
                     clickA = blockID;
-                    clickComp = arrayAll.get(randomInt(0, arrayAll.size() - 1));
+                    if(firstClickComp)
+                    {
+                        clickComp = arrayAll.get(randomInt(0, arrayAll.size() - 1));
+                        firstClickComp = false;
+                    }
+                    else
+                    {
+                        switch(difficulty)
+                        {
+                            case 0:
+                                clickComp = arrayAll.get(randomInt(0, arrayAll.size() - 1));
+                                break;
+                            case 1:
+                                ArrayList<Integer> neighbours = neighbours(clickComp);
+                                for(int i = 0; i < neighbours.size(); i++)
+                                {
+                                    int index = randomInt(0, neighbours.size() - 1);
+                                    if(arrayAll.contains(neighbours.get(new Integer(index))) && compCanClick)
+                                    {
+                                        clickComp = neighbours.get(new Integer(index));
+                                        compCanClick = false;
+                                    }
+                                    neighbours.remove(new Integer(index));
+                                }
+                                if(compCanClick)
+                                {
+                                    clickComp = arrayAll.get(randomInt(0, arrayAll.size() - 1));
+                                    compCanClick = false;
+                                }
+                                break;
+                            case 2:
+                                clickComp = arrayAll.get(randomInt(0, arrayAll.size() - 1));
+                                break;
+                            default:
+                                clickComp = arrayAll.get(randomInt(0, arrayAll.size() - 1));
+                                break;
+                        }
+                    }
+
                 }
                 turn++;
 
@@ -254,6 +296,7 @@ public class VersusComputerActivity extends ActionBarActivity {
                         BitmapDrawable bitmapDrawable3 = new BitmapDrawable(getResources(), b3);
                         ib3.setBackground(bitmapDrawable3);
                     }
+                    compCanClick = true;
                     //Log.d("Level: ", levelNumberString);
                     Log.d("arrayA: ", arrayA.size() + " elements");
                     Log.d("arrayB: ", arrayB.size() + " elements");
@@ -282,6 +325,7 @@ public class VersusComputerActivity extends ActionBarActivity {
                 scoreComp = 0;
                 clickA = 0;
                 clickComp = 0;
+                firstClickComp = true;
                 startActivity(intent);
             }
 
@@ -290,16 +334,31 @@ public class VersusComputerActivity extends ActionBarActivity {
     };
 
     public static int randomInt(int min, int max) {
-
-        // NOTE: Usually this should be a field rather than a method
-        // variable so that it is not re-seeded every call.
         Random rand = new Random();
-
-        // nextInt is normally exclusive of the top value,
-        // so add 1 to make it inclusive
         int randomNum = rand.nextInt((max - min) + 1) + min;
-
         return randomNum;
+    }
+
+    public static ArrayList<Integer> neighbours(int block)
+    {
+        ArrayList<Integer> res = new ArrayList<Integer>();
+        int temp = block - 11;
+        res.add(temp);
+        temp = block - 10;
+        res.add(temp);
+        temp = block - 9;
+        res.add(temp);
+        temp = block - 1;
+        res.add(temp);
+        temp = block + 1;
+        res.add(temp);
+        temp = block + 9;
+        res.add(temp);
+        temp = block + 10;
+        res.add(temp);
+        temp = block + 11;
+        res.add(temp);
+        return res;
     }
 
     public static boolean boardFull()
