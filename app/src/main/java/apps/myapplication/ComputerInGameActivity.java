@@ -40,7 +40,7 @@ public class ComputerInGameActivity extends ActionBarActivity {
     // Level 3
     private static int[] arrayLevel3 = {5, 5, 21, 25, 42, 53, 55};
     // Level 4
-    private static int[] arrayLevel4 = {6, 6, 16, 22, 23, 32, 45, 54, 55, 61};
+    private static int[] arrayLevel4 = {6, 6, 16, 22, 23, 32, 34, 35, 45, 61};
     // Level 5
     private static int[] arrayLevel5 = {6, 6, 12, 14, 25, 32, 43, 45, 51, 63};
     // Width of the Level
