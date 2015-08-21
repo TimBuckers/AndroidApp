@@ -3,6 +3,7 @@ package apps.myapplication;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -74,7 +76,7 @@ public class InGameActivity extends ActionBarActivity {
 
         String levelNumber = getIntent().getExtras().getString("LevelNumber");
         setTitle(levelNumber);
-        
+
         /**
          * setup the map
          */
@@ -87,11 +89,8 @@ public class InGameActivity extends ActionBarActivity {
             llVertical.setOrientation(LinearLayout.VERTICAL);
 
 
-            arrayD.add(22);
-            arrayD.add(31);
-            arrayD.add(44);
             arrayD.add(23);
-
+            arrayD.add(21);
             //add 5 blocks
             for (int r = 1; r < 6; r++) {
                 if( !arrayD.contains(r * 10 + c ) ) {
@@ -117,6 +116,13 @@ public class InGameActivity extends ActionBarActivity {
             }
 
             llHorizontal.addView(llVertical);
+
+            // turn
+            TextView tv = (TextView) findViewById(R.id.playerAB);
+            if(turn == 0){
+                tv.setText("Orange");
+                tv.setTextColor(Color.parseColor("#ff9000"));
+            }
         }
 
 
@@ -149,24 +155,35 @@ public class InGameActivity extends ActionBarActivity {
 
                     } else {
                         arrayA.add(clickA);
-                        Log.d("test", "clickA: " + clickA);
                         ImageButton ib2 = (ImageButton) findViewById(clickA);
                         Bitmap b2 = decodeSampledBitmapFromResource(getResources(), R.drawable.orange, blockSize(5), blockSize(5));
                         BitmapDrawable bitmapDrawable2 = new BitmapDrawable(getResources(), b2);
                         ib2.setBackground(bitmapDrawable2);
 
                         arrayB.add(clickB);
-                        Log.d("test", "clickB: " + clickB);
                         ImageButton ib3 = (ImageButton) findViewById(clickB);
-                        Bitmap b3 = decodeSampledBitmapFromResource(getResources(), R.drawable.purple, blockSize(5), blockSize(5));
+                        Bitmap b3 = decodeSampledBitmapFromResource(getResources(), R.drawable.blue, blockSize(5), blockSize(5));
                         BitmapDrawable bitmapDrawable3 = new BitmapDrawable(getResources(), b3);
                         ib3.setBackground(bitmapDrawable3);
                     }
+                    // update score if turn is 2
+                    //int var = TheScore.simpleScore(arrayA, 5, 5);
+                    int var = TheScore.totalScore(arrayA, 5, 5);
+
+                    Log.d("test", " " + var);
+                    //reset turn
                     turn = 0;
                 }
+                TextView tv = (TextView) findViewById(R.id.playerAB);
+                if(turn == 0){
+                    tv.setText("Orange");
+                    tv.setTextColor(Color.parseColor("#ff9000"));
+                }
+                if(turn == 1){
+                    tv.setText("Blue");
+                    tv.setTextColor(Color.parseColor("#24c2da"));
+                }
             }
-
-           // Log.d( "test", v.getId() + "a");
         }
     };
 

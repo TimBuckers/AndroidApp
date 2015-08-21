@@ -22,6 +22,7 @@
         </activity>
         <activity
             android:name=".InGameActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_in_game_activity" >
         </activity>
         <activity
