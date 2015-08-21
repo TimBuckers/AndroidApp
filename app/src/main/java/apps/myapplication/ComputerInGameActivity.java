@@ -33,11 +33,15 @@ public class ComputerInGameActivity extends ActionBarActivity {
      * Level Data (first two values is the width x length)
      **/
     // Level 1
-    private static int[] arrayLevel1 = {5, 5, 13, 14, 15, 23, 24, 52, 53};
+    private static int[] arrayLevel1 = {5, 5, 13, 14, 15, 24, 43, 52, 53};
     // Level 2
-    private static int[] arrayLevel2 = {5, 5, 11, 12, 15, 25, 33, 51, 52};
+    private static int[] arrayLevel2 = {5, 5, 22, 32, 34, 43, 44};
     // Level 3
-    private static int[] arrayLevel3 = {6, 6, 33, 12, 65, 23, 24, 62, 53};
+    private static int[] arrayLevel3 = {5, 5, 23, 32, 33, 34};
+    // Level 4
+    private static int[] arrayLevel4 = {6, 6, 23, 32, 33, 34};
+    // Level 5
+    private static int[] arrayLevel5 = {6, 6, 23, 32, 33, 34};
     // Width of the Level
     private static int levelWidth;
     // Length of the Level
@@ -138,7 +142,7 @@ public class ComputerInGameActivity extends ActionBarActivity {
             case 1:
                 levelWidth = arrayLevel1[0];
                 levelLength = arrayLevel1[1];
-                for(int i = 2; i < 9; i++)
+                for(int i = 2; i < arrayLevel1.length; i++)
                 {
                     arrayD.add(arrayLevel1[i]);
                 }
@@ -153,7 +157,7 @@ public class ComputerInGameActivity extends ActionBarActivity {
             case 2:
                 levelWidth = arrayLevel2[0];
                 levelLength = arrayLevel2[1];
-                for(int i = 2; i < 9; i++)
+                for(int i = 2; i < arrayLevel2.length; i++)
                 {
                     arrayD.add(arrayLevel2[i]);
                 }
@@ -161,7 +165,7 @@ public class ComputerInGameActivity extends ActionBarActivity {
             case 3:
                 levelWidth = arrayLevel3[0];
                 levelLength = arrayLevel3[1];
-                for(int i = 2; i < 9; i++)
+                for(int i = 2; i < arrayLevel3.length; i++)
                 {
                     arrayD.add(arrayLevel3[i]);
                 }
@@ -169,7 +173,7 @@ public class ComputerInGameActivity extends ActionBarActivity {
             default:
                 levelWidth = arrayLevel1[0];
                 levelLength = arrayLevel1[1];
-                for(int i = 2; i < 9; i++)
+                for(int i = 2; i < arrayLevel1.length; i++)
                 {
                     arrayD.add(arrayLevel1[i]);
                 }
@@ -244,18 +248,19 @@ public class ComputerInGameActivity extends ActionBarActivity {
                                 for(int i = 0; i < neighbours.size(); i++)
                                 {
                                     int index = randomInt(0, neighbours.size() - 1);
-                                    if(arrayAll.contains(neighbours.get(new Integer(index))) && compCanClick)
+                                    if(arrayAll.contains(neighbours.get(index)) && compCanClick)
                                     {
-                                        clickComp = neighbours.get(new Integer(index));
+                                        clickComp = neighbours.get(index);
                                         compCanClick = false;
                                     }
-                                    neighbours.remove(new Integer(index));
+                                    neighbours.remove(index);
                                 }
                                 if(compCanClick)
                                 {
                                     clickComp = arrayAll.get(randomInt(0, arrayAll.size() - 1));
                                     compCanClick = false;
                                 }
+                                neighbours.clear();
                                 break;
                             case 2:
                                 clickComp = arrayAll.get(randomInt(0, arrayAll.size() - 1));
@@ -271,6 +276,11 @@ public class ComputerInGameActivity extends ActionBarActivity {
 
                 if (turn == 1) {
                     if (clickA == clickComp) {
+                        try {
+                            Thread.sleep(500);                 //1000 milliseconds is one second.
+                        } catch(InterruptedException ex) {
+                            Thread.currentThread().interrupt();
+                        }
                         arrayX.add(clickA);
                         arrayAll.remove(new Integer(clickA));
                         ImageButton ib1 = (ImageButton) findViewById(clickA);
@@ -287,6 +297,11 @@ public class ComputerInGameActivity extends ActionBarActivity {
                         BitmapDrawable bitmapDrawable2 = new BitmapDrawable(getResources(), b2);
                         ib2.setBackground(bitmapDrawable2);
 
+                        try {
+                            Thread.sleep(500);                 //1000 milliseconds is one second.
+                        } catch(InterruptedException ex) {
+                            Thread.currentThread().interrupt();
+                        }
                         arrayB.add(clickComp);
                         Log.d("test", "clickB: " + clickComp);
                         arrayAll.remove(new Integer(clickComp));

@@ -28,15 +28,28 @@ public class ComputerPostGameActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void selectLevel(View view) {
+        Intent intent = new Intent(this, ComputerSelectLevelActivity.class);
+        difficulty = getIntent().getExtras().getString("Difficulty");
+        intent.putExtra("Difficulty", difficulty);
+        startActivity(intent);
+    }
+
+    public void selectDifficulty(View view) {
+        Intent intent = new Intent(this, ComputerSelectDifficultyActivity.class);
+        startActivity(intent);
+    }
+
     public void goToHomeScreen(View view) {
         Intent intent = new Intent(this, HomeScreenActivity.class);
         startActivity(intent);
     }
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_friend_post_game_friend);
+        setContentView(R.layout.activity_computer_post_game);
 
         levelNumber = getIntent().getExtras().getString("LevelNumber");
         setTitle("Finished " + levelNumber);

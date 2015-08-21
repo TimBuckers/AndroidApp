@@ -24,6 +24,11 @@ public class FriendPostGameActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void selectLevel(View view) {
+        Intent intent = new Intent(this, FriendLevelsOverview.class);
+        startActivity(intent);
+    }
+
     public void goToHomeScreen(View view) {
         Intent intent = new Intent(this, HomeScreenActivity.class);
         startActivity(intent);
