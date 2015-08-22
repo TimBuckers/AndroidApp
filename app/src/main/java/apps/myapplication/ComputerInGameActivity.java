@@ -20,6 +20,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Random;
 
 /**
@@ -77,6 +79,7 @@ public class ComputerInGameActivity extends ActionBarActivity {
     private static int clickA = 0;
     private static int clickComp = 0;
     private static boolean firstClickComp = true;
+    private static boolean secondClickComp = false;
     private static boolean compCanClick = true;
 
     // turn A(0) B(1) or Done(2)
@@ -169,6 +172,7 @@ public class ComputerInGameActivity extends ActionBarActivity {
         clickComp = 0;
         blockNumbers = 0;
         firstClickComp = true;
+        secondClickComp = false;
     }
 
     @Override
@@ -267,11 +271,6 @@ public class ComputerInGameActivity extends ActionBarActivity {
 
                 if (turn == 1) {
                     if (clickA == clickComp) {
-                        try {
-                            Thread.sleep(500);                 //1000 milliseconds is one second.
-                        } catch(InterruptedException ex) {
-                            Thread.currentThread().interrupt();
-                        }
                         arrayX.add(clickA);
                         arrayAll.remove(new Integer(clickA));
                         ImageButton ib1 = (ImageButton) findViewById(clickA);
@@ -287,12 +286,6 @@ public class ComputerInGameActivity extends ActionBarActivity {
                         Bitmap b2 = decodeSampledBitmapFromResource(getResources(), R.drawable.orange, blockSize(levelWidth), blockSize(levelWidth));
                         BitmapDrawable bitmapDrawable2 = new BitmapDrawable(getResources(), b2);
                         ib2.setBackground(bitmapDrawable2);
-
-                        try {
-                            Thread.sleep(500);                 //1000 milliseconds is one second.
-                        } catch(InterruptedException ex) {
-                            Thread.currentThread().interrupt();
-                        }
                         arrayB.add(clickComp);
                         Log.d("test", "clickB: " + clickComp);
                         arrayAll.remove(new Integer(clickComp));
@@ -315,6 +308,10 @@ public class ComputerInGameActivity extends ActionBarActivity {
                     Log.d("arrayD: ", arrayD.size() + " elements");
                     Log.d("arrayX: ", arrayX.size() + " elements");
                     Log.d("arrayAll: ", arrayAll.size() + " elements");
+                    for(int i = 0; i < arrayAll.size(); i++)
+                    {
+                        Log.d("Block" + i + ": ", arrayAll.get(i) + "...");
+                    }
                     Log.d("Total blocks: ", blockNumbers + " blocks");
                     turn = 0;
                 }
@@ -339,6 +336,7 @@ public class ComputerInGameActivity extends ActionBarActivity {
                 clickA = 0;
                 clickComp = 0;
                 firstClickComp = true;
+                secondClickComp = false;
                 startActivity(intent);
             }
 
@@ -348,7 +346,6 @@ public class ComputerInGameActivity extends ActionBarActivity {
 
     public static void computerMove()
     {
-        boolean secondClickComp = false;
         // First move of the computer is always random
         if(firstClickComp)
         {
@@ -366,65 +363,11 @@ public class ComputerInGameActivity extends ActionBarActivity {
                     break;
                 // Medium computer selects neighbours
                 case 1:
-                    ArrayList<Integer> neighbours = neighbours(clickComp);
-                    for(int i = 0; i < neighbours.size(); i++)
-                    {
-                        int index = randomInt(0, neighbours.size() - 1);
-                        if(arrayAll.contains(neighbours.get(index)) && compCanClick)
-                        {
-                            clickComp = neighbours.get(index);
-                            compCanClick = false;
-                        }
-                        neighbours.remove(index);
-                    }
-                    if(compCanClick)
-                    {
-                        clickComp = arrayAll.get(randomInt(0, arrayAll.size() - 1));
-                        compCanClick = false;
-                    }
-                    neighbours.clear();
+                    compMediumMove();
                     break;
                 // Hard computer should be smart and make the best move possible
                 case 2:
-                    if(secondClickComp)
-                    {
-                        ArrayList<Integer> neighbours2 = neighbours(clickComp);
-                        for(int i = 0; i < neighbours2.size(); i++)
-                        {
-                            int index = randomInt(0, neighbours2.size() - 1);
-                            if(arrayAll.contains(neighbours2.get(index)))
-                            {
-                                clickComp = neighbours2.get(index);
-                                compCanClick = false;
-                            }
-                            neighbours2.remove(index);
-                        }
-                        secondClickComp = false;
-                    }
-                    ArrayList<Integer>[] combinations = combinationOfArray();
-                    for(int i = 0; i < combinations.length; i++)
-                    {
-                        if(combinations[i].size() != 0)
-                        {
-                            ThreeRow temp = new ThreeRow(combinations[i].get(0), combinations[i].get(1));
-                            int[] possibleBlocks = temp.calcOptions();
-                            if((possibleBlocks != null) && arrayAll.contains(new Integer(possibleBlocks[0])))
-                            {
-                                clickComp = possibleBlocks[0];
-                                compCanClick = false;
-                            }
-                            else if((possibleBlocks != null) && arrayAll.contains(new Integer(possibleBlocks[1])))
-                            {
-                                clickComp = possibleBlocks[1];
-                                compCanClick = false;
-                            }
-                            if(compCanClick)
-                            {
-                                clickComp = arrayAll.get(randomInt(0, arrayAll.size() - 1));
-                                compCanClick = false;
-                            }
-                        }
-                    }
+                    compHardMove();
                     break;
                 default:
                     clickComp = arrayAll.get(randomInt(0, arrayAll.size() - 1));
@@ -433,9 +376,186 @@ public class ComputerInGameActivity extends ActionBarActivity {
         }
     }
 
-    public static ArrayList<Integer>[] combinationOfArray()
+    public static void compMediumMove() {
+        ArrayList<Integer> neighbours = neighbours(clickComp);
+        Collections.shuffle(neighbours);
+        for(int i = 0; i < neighbours.size(); i++)
+        {
+            if(arrayAll.contains(neighbours.get(i)) && compCanClick)
+            {
+                clickComp = neighbours.get(i);
+                compCanClick = false;
+            }
+        }
+        if(compCanClick)
+        {
+            clickComp = arrayAll.get(randomInt(0, arrayAll.size() - 1));
+            compCanClick = false;
+        }
+        neighbours.clear();
+    }
+
+    public static void compHardMove()
     {
-        ArrayList<Integer>[] res2 = new ArrayList[500];
+        if(secondClickComp)
+        {
+            ArrayList<Integer> neighbours2 = neighbours(clickComp);
+            Collections.shuffle(neighbours2);
+            for(int i = 0; i < neighbours2.size(); i++)
+            {
+                if(arrayAll.contains(neighbours2.get(i)))
+                {
+                    clickComp = neighbours2.get(i);
+                    compCanClick = false;
+                }
+            }
+            secondClickComp = false;
+        }
+
+        // Random selecting if he prefers to block a player or to score a point for each turn
+        int oneOrTwo = randomInt(1, 2);
+
+        if(compCanClick)
+        {
+            switch(oneOrTwo)
+            {
+                case 1:
+                    tryToGetPoints();
+                    tryToBlockPlayer();
+
+                    if(compCanClick)
+                    {
+                        ArrayList<Integer> neighbours2 = neighbours(clickComp);
+                        Collections.shuffle(neighbours2);
+                        for(int i = 0; i < neighbours2.size(); i++)
+                        {
+                            if(arrayAll.contains(neighbours2.get(i)))
+                            {
+                                clickComp = neighbours2.get(i);
+                                compCanClick = false;
+                            }
+                        }
+                    }
+
+                    if(compCanClick)
+                    {
+                        clickComp = arrayAll.get(randomInt(0, arrayAll.size() - 1));
+                        compCanClick = false;
+                    }
+
+                    break;
+                case 2:
+                    tryToBlockPlayer();
+                    tryToGetPoints();
+
+                    if(compCanClick)
+                    {
+                        ArrayList<Integer> neighbours3 = neighbours(clickComp);
+                        Collections.shuffle(neighbours3);
+                        for(int i = 0; i < neighbours3.size(); i++)
+                        {
+                            if(arrayAll.contains(neighbours3.get(i)))
+                            {
+                                clickComp = neighbours3.get(i);
+                                compCanClick = false;
+                            }
+                        }
+                    }
+
+                    if(compCanClick)
+                    {
+                        clickComp = arrayAll.get(randomInt(0, arrayAll.size() - 1));
+                        compCanClick = false;
+                    }
+
+                    break;
+                default:
+                    tryToGetPoints();
+                    tryToBlockPlayer();
+
+                    if(compCanClick)
+                    {
+                        ArrayList<Integer> neighbours4 = neighbours(clickComp);
+                        Collections.shuffle(neighbours4);
+                        for(int i = 0; i < neighbours4.size(); i++)
+                        {
+                            if(arrayAll.contains(neighbours4.get(i)))
+                            {
+                                clickComp = neighbours4.get(i);
+                                compCanClick = false;
+                            }
+                        }
+                    }
+
+                    if(compCanClick)
+                    {
+                        clickComp = arrayAll.get(randomInt(0, arrayAll.size() - 1));
+                        compCanClick = false;
+                    }
+
+                    break;
+            }
+        }
+
+    }
+
+    public static void tryToGetPoints()
+    {
+        if(compCanClick)
+        {
+            ArrayList<Integer>[] combinations = combinationOfArray(arrayB);
+            for(int i = 0; i < combinations.length; i++)
+            {
+                if(combinations[i].size() != 0)
+                {
+                    ThreeRow temp = new ThreeRow(combinations[i].get(0), combinations[i].get(1));
+                    int[] possibleBlocks = temp.calcOptions();
+                    if((possibleBlocks != null) && arrayAll.contains(new Integer(possibleBlocks[0])))
+                    {
+                        clickComp = possibleBlocks[0];
+                        compCanClick = false;
+                    }
+                    else if((possibleBlocks != null) && arrayAll.contains(new Integer(possibleBlocks[1])))
+                    {
+                        clickComp = possibleBlocks[1];
+                        compCanClick = false;
+                    }
+                }
+            }
+        }
+
+    }
+
+    public static void tryToBlockPlayer()
+    {
+        if(compCanClick)
+        {
+            ArrayList<Integer>[] combinations = combinationOfArray(arrayA);
+            for(int i = 0; i < combinations.length; i++)
+            {
+                if(combinations[i].size() != 0)
+                {
+                    ThreeRow temp = new ThreeRow(combinations[i].get(0), combinations[i].get(1));
+                    int[] possibleBlocks = temp.calcOptions();
+                    if((possibleBlocks != null) && arrayAll.contains(new Integer(possibleBlocks[0])))
+                    {
+                        clickComp = possibleBlocks[0];
+                        compCanClick = false;
+                    }
+                    else if((possibleBlocks != null) && arrayAll.contains(new Integer(possibleBlocks[1])))
+                    {
+                        clickComp = possibleBlocks[1];
+                        compCanClick = false;
+                    }
+                }
+            }
+        }
+
+    }
+
+    public static ArrayList<Integer>[] combinationOfArray(ArrayList<Integer> usedBlocks)
+    {
+        ArrayList<Integer>[] res2 = new ArrayList[900];
         for(int i = 0; i < res2.length; i++)
         {
             res2[i] = new ArrayList<Integer>();
@@ -443,15 +563,18 @@ public class ComputerInGameActivity extends ActionBarActivity {
 
         int index3 = 0;
 
-        for(int index1 = 0; index1 < arrayB.size(); index1++)
+        for(int index1 = 0; index1 < usedBlocks.size(); index1++)
         {
-            for(int index2 = 0; index2 < arrayB.size(); index2++)
+            for(int index2 = 0; index2 < usedBlocks.size(); index2++)
             {
-                int block1 = arrayB.get(index1);
-                int block2 = arrayB.get(index2);
-                res2[index3].add(block1);
-                res2[index3].add(block2);
-                index3++;
+                int block1 = usedBlocks.get(index1);
+                int block2 = usedBlocks.get(index2);
+                if(block1 != block2)
+                {
+                    res2[index3].add(block1);
+                    res2[index3].add(block2);
+                    index3++;
+                }
             }
         }
 
@@ -503,20 +626,20 @@ public class ComputerInGameActivity extends ActionBarActivity {
         ArrayList<Integer> res = new ArrayList<Integer>();
         int temp = block - 11;
         res.add(temp);
-        temp = block - 10;
-        res.add(temp);
-        temp = block - 9;
-        res.add(temp);
-        temp = block - 1;
-        res.add(temp);
-        temp = block + 1;
-        res.add(temp);
-        temp = block + 9;
-        res.add(temp);
-        temp = block + 10;
-        res.add(temp);
-        temp = block + 11;
-        res.add(temp);
+        int temp2 = block - 10;
+        res.add(temp2);
+        int temp3 = block - 9;
+        res.add(temp3);
+        int temp4 = block - 1;
+        res.add(temp4);
+        int temp5 = block + 1;
+        res.add(temp5);
+        int temp6 = block + 9;
+        res.add(temp6);
+        int temp7 = block + 10;
+        res.add(temp7);
+        int temp8 = block + 11;
+        res.add(temp8);
         return res;
     }
 
