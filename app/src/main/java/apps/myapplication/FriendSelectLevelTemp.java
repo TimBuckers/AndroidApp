@@ -13,7 +13,7 @@ import android.widget.ImageView;
 public class FriendSelectLevelTemp extends AppCompatActivity {
 
 
-    public void selectLevelsComp(View view) {
+    public void selectLevelsFriend(View view) {
         Intent intent = new Intent(this, FriendInGameActivity.class);
         Button button = (Button) findViewById(view.getId());
         String buttonText = (String) button.getText();

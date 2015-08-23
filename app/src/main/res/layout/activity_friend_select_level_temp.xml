@@ -9,81 +9,52 @@
         android:scaleType="fitXY"
         android:id="@+id/imageView"/>
 
-    <Button
+    <GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/compLevel1"
-        android:alpha="0.8"
-        android:text="Level 1"
-        android:textColor="@android:color/white"
-        android:background="@drawable/button_custom"
-        android:onClick="selectLevelsComp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="97dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignLeft="@+id/compLevel4"
-        android:layout_alignStart="@+id/compLevel4" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/compLevel2"
-        android:alpha="0.8"
-        android:text="Level 2"
-        android:textColor="@android:color/white"
-        android:background="@drawable/button_custom"
-        android:onClick="selectLevelsComp"
-        android:layout_gravity="center_horizontal"
-        android:layout_alignTop="@+id/compLevel1"
-        android:layout_alignRight="@+id/compLevel3"
-        android:layout_alignEnd="@+id/compLevel3"
-        android:layout_marginRight="59dp"
-        android:layout_marginEnd="59dp" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/compLevel3"
-        android:alpha="0.8"
-        android:text="Level 3"
-        android:textColor="@android:color/white"
-        android:background="@drawable/button_custom"
-        android:onClick="selectLevelsComp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginRight="57dp"
-        android:layout_marginEnd="57dp"
+        android:layout_gravity="center"
+        android:columnCount="3"
+        android:orientation="horizontal"
         android:layout_centerVertical="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_centerHorizontal="true">
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/compLevel5"
-        android:alpha="0.8"
-        android:text="Level 5"
-        android:textColor="@android:color/white"
-        android:background="@drawable/button_custom"
-        android:onClick="selectLevelsComp"
-        android:layout_gravity="center_horizontal"
-        android:layout_below="@+id/compLevel2"
-        android:layout_alignLeft="@+id/compLevel2"
-        android:layout_alignStart="@+id/compLevel2"
-        android:layout_marginTop="29dp" />
+        <Button android:id="@+id/friendLevel1"
+            android:text="Level 1"
+            android:onClick="selectLevelsFriend"/>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/compLevel4"
-        android:alpha="0.8"
-        android:text="Level 4"
-        android:textColor="@android:color/white"
-        android:background="@drawable/button_custom"
-        android:onClick="selectLevelsComp"
-        android:layout_gravity="center_horizontal"
-        android:layout_alignTop="@+id/compLevel3"
-        android:layout_toLeftOf="@+id/compLevel5"
-        android:layout_toStartOf="@+id/compLevel5" />
+        <Button android:id="@+id/friendLevel2"
+            android:text="Level 2"
+            android:onClick="selectLevelsFriend"/>
+
+        <Button android:id="@+id/compLevel3"
+            android:text="Level 3"
+            android:onClick="selectLevelsPlayer"/>
+
+        <Button android:id="@+id/friendLevel4"
+            android:text="Level 4"
+            android:onClick="selectLevelsFriend"/>
+
+        <Button android:id="@+id/friendLevel5"
+            android:text="Level 5"
+            android:onClick="selectLevelsFriend"/>
+
+        <Button android:id="@+id/friendLevel6"
+            android:text="Level 6"
+            android:onClick="selectLevelsFriend"/>
+
+        <Button android:id="@+id/friendLevel7"
+            android:text="Level 7"
+            android:onClick="selectLevelsFriend"/>
+
+        <Button android:id="@+id/friendLevel8"
+            android:text="Level 8"
+            android:onClick="selectLevelsFriend"/>
+
+        <Button android:id="@+id/friendLevel9"
+            android:text="Level 9"
+            android:onClick="selectLevelsFriend"/>
+
+    </GridLayout>
 
 
 </RelativeLayout>

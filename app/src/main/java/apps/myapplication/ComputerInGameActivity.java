@@ -42,9 +42,17 @@ public class ComputerInGameActivity extends ActionBarActivity {
     // Level 3
     private static int[] arrayLevel3 = {5, 5, 21, 25, 42, 53, 55};
     // Level 4
-    private static int[] arrayLevel4 = {6, 6, 16, 22, 23, 32, 34, 35, 45, 61};
+    private static int[] arrayLevel4 = {6, 6, 16, 23, 32, 34, 35, 45, 61};
     // Level 5
     private static int[] arrayLevel5 = {6, 6, 12, 14, 25, 32, 43, 45, 51, 63};
+    // Level 6
+    private static int[] arrayLevel6 = {6, 6, 16, 22, 26, 34, 43, 52, 54};
+    // Level 7
+    private static int[] arrayLevel7 = {7, 7, 12, 17, 23, 27, 34, 42, 45, 53, 64, 75};
+    // Level 8
+    private static int[] arrayLevel8 = {7, 7, 16, 22, 32, 35, 43, 46, 51, 56, 63, 65};
+    // Level 9
+    private static int[] arrayLevel9 = {7, 7, 11, 13, 15, 17, 31, 34, 37, 43, 45, 51, 54, 57, 71, 73, 75, 77};
     // Width of the Level
     private static int levelWidth;
     // Length of the Level
@@ -137,12 +145,36 @@ public class ComputerInGameActivity extends ActionBarActivity {
                 }
                 break;
             case 6:
+                levelWidth = arrayLevel6[0];
+                levelLength = arrayLevel6[1];
+                for(int i = 2; i < arrayLevel6.length; i++)
+                {
+                    arrayD.add(arrayLevel6[i]);
+                }
                 break;
             case 7:
+                levelWidth = arrayLevel7[0];
+                levelLength = arrayLevel7[1];
+                for(int i = 2; i < arrayLevel7.length; i++)
+                {
+                    arrayD.add(arrayLevel7[i]);
+                }
                 break;
             case 8:
+                levelWidth = arrayLevel8[0];
+                levelLength = arrayLevel8[1];
+                for(int i = 2; i < arrayLevel8.length; i++)
+                {
+                    arrayD.add(arrayLevel8[i]);
+                }
                 break;
             case 9:
+                levelWidth = arrayLevel9[0];
+                levelLength = arrayLevel9[1];
+                for(int i = 2; i < arrayLevel9.length; i++)
+                {
+                    arrayD.add(arrayLevel9[i]);
+                }
                 break;
             default:
                 levelWidth = arrayLevel1[0];
@@ -555,7 +587,7 @@ public class ComputerInGameActivity extends ActionBarActivity {
 
     public static ArrayList<Integer>[] combinationOfArray(ArrayList<Integer> usedBlocks)
     {
-        ArrayList<Integer>[] res2 = new ArrayList[900];
+        ArrayList<Integer>[] res2 = new ArrayList[500];
         for(int i = 0; i < res2.length; i++)
         {
             res2[i] = new ArrayList<Integer>();
@@ -607,12 +639,20 @@ public class ComputerInGameActivity extends ActionBarActivity {
                 scoreComp = TheScore.totalScore(arrayB, arrayLevel5[0], arrayLevel5[1]);
                 break;
             case 6:
+                scoreA = TheScore.totalScore(arrayA, arrayLevel6[0], arrayLevel6[1]);
+                scoreComp = TheScore.totalScore(arrayB, arrayLevel6[0], arrayLevel6[1]);
                 break;
             case 7:
+                scoreA = TheScore.totalScore(arrayA, arrayLevel7[0], arrayLevel7[1]);
+                scoreComp = TheScore.totalScore(arrayB, arrayLevel7[0], arrayLevel7[1]);
                 break;
             case 8:
+                scoreA = TheScore.totalScore(arrayA, arrayLevel8[0], arrayLevel8[1]);
+                scoreComp = TheScore.totalScore(arrayB, arrayLevel8[0], arrayLevel8[1]);
                 break;
             case 9:
+                scoreA = TheScore.totalScore(arrayA, arrayLevel9[0], arrayLevel9[1]);
+                scoreComp = TheScore.totalScore(arrayB, arrayLevel9[0], arrayLevel9[1]);
                 break;
             default:
                 scoreA = TheScore.totalScore(arrayA, arrayLevel1[0], arrayLevel1[1]);
