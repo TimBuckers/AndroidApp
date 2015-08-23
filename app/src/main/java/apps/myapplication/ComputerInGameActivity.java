@@ -389,11 +389,11 @@ public class ComputerInGameActivity extends ActionBarActivity {
         {
             switch(difficulty)
             {
-                // Easy computer sets random moves
+                // Easy computer tries to put his next set in a neighbour square
                 case 0:
-                    clickComp = arrayAll.get(randomInt(0, arrayAll.size() - 1));
+                    compEasyMove();
                     break;
-                // Medium computer selects neighbours
+                // Medium computer selects neighbours and will get a point if possible
                 case 1:
                     compMediumMove();
                     break;
@@ -408,7 +408,7 @@ public class ComputerInGameActivity extends ActionBarActivity {
         }
     }
 
-    public static void compMediumMove() {
+    public static void compEasyMove() {
         ArrayList<Integer> neighbours = neighbours(clickComp);
         Collections.shuffle(neighbours);
         for(int i = 0; i < neighbours.size(); i++)
@@ -425,6 +425,32 @@ public class ComputerInGameActivity extends ActionBarActivity {
             compCanClick = false;
         }
         neighbours.clear();
+    }
+
+    public static void compMediumMove() {
+
+        tryToGetPoints();
+
+        if(compCanClick)
+        {
+            ArrayList<Integer> neighbours = neighbours(clickComp);
+            Collections.shuffle(neighbours);
+            for(int i = 0; i < neighbours.size(); i++)
+            {
+                if(arrayAll.contains(neighbours.get(i)) && compCanClick)
+                {
+                    clickComp = neighbours.get(i);
+                    compCanClick = false;
+                }
+            }
+            neighbours.clear();
+        }
+
+        if(compCanClick)
+        {
+            clickComp = arrayAll.get(randomInt(0, arrayAll.size() - 1));
+            compCanClick = false;
+        }
     }
 
     public static void compHardMove()
