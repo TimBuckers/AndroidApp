@@ -31,7 +31,7 @@ public class FriendSelectLevelTemp extends AppCompatActivity {
         if(displayMetrics.heightPixels / displayMetrics.widthPixels < 1){
             imageView.setImageDrawable(getResources().getDrawable(R.drawable.homescreen_background));
         }else{
-            imageView.setImageDrawable(getResources().getDrawable(R.drawable.homescreen_background_long));
+            imageView.setImageDrawable(getResources().getDrawable(R.drawable.background_long));
         }
     }
 
