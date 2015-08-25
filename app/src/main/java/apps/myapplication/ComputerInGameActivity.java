@@ -334,23 +334,24 @@ public class ComputerInGameActivity extends ActionBarActivity {
                     textViewPlayer.setText("Player 1: " + scoreA);
                     textViewComputer.setText("Computer: " + scoreComp);
 
+                    /*
                     //Log.d("Level: ", levelNumberString);
                     Log.d("arrayA: ", arrayA.size() + " elements");
                     Log.d("arrayB: ", arrayB.size() + " elements");
                     Log.d("arrayD: ", arrayD.size() + " elements");
                     Log.d("arrayX: ", arrayX.size() + " elements");
                     Log.d("arrayAll: ", arrayAll.size() + " elements");
-                    for(int i = 0; i < arrayAll.size(); i++)
-                    {
-                        Log.d("Block" + i + ": ", arrayAll.get(i) + "...");
-                    }
-                    Log.d("Total blocks: ", blockNumbers + " blocks");
+                    Log.d("Total blocks: ", blockNumbers + " blocks");*/
+
                     turn = 0;
                 }
             }
 
-            if(boardFull())
+            if(boardFull() || noUsefullBlocksLeft())
             {
+
+                Log.d("Game is over", "!");
+
                 calculateScores();
                 arrayA.clear();
                 arrayB.clear();
@@ -638,6 +639,80 @@ public class ComputerInGameActivity extends ActionBarActivity {
 
         return res2;
 
+    }
+
+    public static boolean noUsefullBlocksLeft()
+    {
+        ArrayList<Integer> playerBlocks = new ArrayList<Integer>(arrayA);
+        ArrayList<Integer> computerBlocks = new ArrayList<Integer>(arrayB);
+        ArrayList<Integer> blocksLeft = new ArrayList<Integer>(arrayAll);
+
+        calculateScores();
+
+        int currentScoreOfPlayer = scoreA;
+        int currentScoreOfComputer = scoreComp;
+
+        int newScoreOfPlayer = 0;
+        int newScoreOfComputer = 0;
+
+        for(int i = 0; i < blocksLeft.size(); i++)
+        {
+            int randomBlock = blocksLeft.get(i);
+            playerBlocks.add(randomBlock);
+            computerBlocks.add(randomBlock);
+
+        }
+
+            switch(levelNumberInt)
+            {
+                case 1:
+                    newScoreOfPlayer = TheScore.totalScore(playerBlocks, arrayLevel1[0], arrayLevel1[1]);
+                    newScoreOfComputer = TheScore.totalScore(computerBlocks, arrayLevel1[0], arrayLevel1[1]);
+                    break;
+                case 2:
+                    newScoreOfPlayer = TheScore.totalScore(playerBlocks, arrayLevel2[0], arrayLevel2[1]);
+                    newScoreOfComputer = TheScore.totalScore(computerBlocks, arrayLevel2[0], arrayLevel2[1]);
+                    break;
+                case 3:
+                    newScoreOfPlayer = TheScore.totalScore(playerBlocks, arrayLevel3[0], arrayLevel3[1]);
+                    newScoreOfComputer = TheScore.totalScore(computerBlocks, arrayLevel3[0], arrayLevel3[1]);
+                    break;
+                case 4:
+                    newScoreOfPlayer = TheScore.totalScore(playerBlocks, arrayLevel4[0], arrayLevel4[1]);
+                    newScoreOfComputer = TheScore.totalScore(computerBlocks, arrayLevel4[0], arrayLevel4[1]);
+                    break;
+                case 5:
+                    newScoreOfPlayer = TheScore.totalScore(playerBlocks, arrayLevel5[0], arrayLevel5[1]);
+                    newScoreOfComputer = TheScore.totalScore(computerBlocks, arrayLevel5[0], arrayLevel5[1]);
+                    break;
+                case 6:
+                    newScoreOfPlayer = TheScore.totalScore(playerBlocks, arrayLevel6[0], arrayLevel6[1]);
+                    newScoreOfComputer = TheScore.totalScore(computerBlocks, arrayLevel6[0], arrayLevel6[1]);
+                    break;
+                case 7:
+                    newScoreOfPlayer = TheScore.totalScore(playerBlocks, arrayLevel7[0], arrayLevel7[1]);
+                    newScoreOfComputer = TheScore.totalScore(computerBlocks, arrayLevel7[0], arrayLevel7[1]);
+                    break;
+                case 8:
+                    newScoreOfPlayer = TheScore.totalScore(playerBlocks, arrayLevel8[0], arrayLevel8[1]);
+                    newScoreOfComputer = TheScore.totalScore(computerBlocks, arrayLevel8[0], arrayLevel8[1]);
+                    break;
+                case 9:
+                    newScoreOfPlayer = TheScore.totalScore(playerBlocks, arrayLevel9[0], arrayLevel9[1]);
+                    newScoreOfComputer = TheScore.totalScore(computerBlocks, arrayLevel9[0], arrayLevel9[1]);
+                    break;
+                default:
+                    newScoreOfPlayer = TheScore.totalScore(playerBlocks, arrayLevel1[0], arrayLevel1[1]);
+                    newScoreOfComputer = TheScore.totalScore(computerBlocks, arrayLevel1[0], arrayLevel1[1]);
+                    break;
+            }
+
+            if(newScoreOfPlayer!=currentScoreOfPlayer || newScoreOfComputer!=currentScoreOfComputer)
+            {
+                return false;
+            }
+
+        return true;
     }
 
     public static void calculateScores()

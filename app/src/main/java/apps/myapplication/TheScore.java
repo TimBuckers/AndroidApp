@@ -187,7 +187,7 @@ public class TheScore {
             }
         }
         Collections.sort(diaBlocks);
-        Log.d("test", "diaStartIndexX" + diaBlocks.toString());
+        //Log.d("test", "diaStartIndexX" + diaBlocks.toString());
 
         ArrayList<Integer> diaBlocksY = new ArrayList<Integer>();
         for(int i = 0; i < diaBlocks.size(); i ++){
@@ -252,7 +252,7 @@ public class TheScore {
         }
         // not needed ?..
         Collections.sort(diaBlocks);
-        Log.d("test", "diaStartIndexX" + diaBlocks.toString());
+        //Log.d("test", "diaStartIndexX" + diaBlocks.toString());
 
         ArrayList<Integer> diaBlocksY = new ArrayList<Integer>();
         for(int i = 0; i < diaBlocks.size(); i ++){
