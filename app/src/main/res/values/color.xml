@@ -1,4 +1,5 @@
     <resources>
         <color name="ColorPrimary">#0d3e66</color>
         <color name="ColorPrimaryDark">#041e3d</color>
+        <color name="bgBlue">#0d3e66</color>
     </resources>

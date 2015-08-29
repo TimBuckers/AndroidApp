@@ -15,7 +15,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -223,6 +222,7 @@ public class FriendInGameActivity extends ActionBarActivity {
         int blocksize = blockSize(levelWidth);
 
         LinearLayout llHorizontal = (LinearLayout) findViewById(R.id.linearlayout_main);
+        llHorizontal.setBackgroundColor(R.color.bgBlue);
         for(int c =1; c <levelWidth + 1; c++) {
             LinearLayout llVertical = new LinearLayout(this);
             llVertical.setOrientation(LinearLayout.VERTICAL);
@@ -231,20 +231,35 @@ public class FriendInGameActivity extends ActionBarActivity {
             for (int r = 1; r < levelLength + 1; r++) {
                 if( !arrayD.contains(r * 10 + c ) ) {
 
-                    ImageButton ib = new ImageButton(this);
+                    ImageView ib = new ImageView(this);
                     Bitmap b = decodeSampledBitmapFromResource(getResources(), R.drawable.empty_block, blocksize, blocksize);
                     BitmapDrawable bitmapDrawable = new BitmapDrawable(getResources(), b);
-                    ib.setBackground(bitmapDrawable);
+                    ib.setImageDrawable(bitmapDrawable);
+
+                    //set border
+                    final int sdk = android.os.Build.VERSION.SDK_INT;
+                    if(sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+                        ib.setBackgroundDrawable( getResources().getDrawable(R.drawable.border) );
+                    } else {
+                        ib.setBackground( getResources().getDrawable(R.drawable.border));
+                    }
                     int id = r * 10 + c;
                     ib.setOnClickListener(onClickListener);
                     ib.setId(id);
                     llVertical.addView(ib);
                     blockNumbers++;
                 }else{
-                    ImageView ib = new ImageButton(this);
+                    ImageView ib = new ImageView(this);
                     Bitmap b = decodeSampledBitmapFromResource(getResources(), R.drawable.block_black, blocksize, blocksize);
                     BitmapDrawable bitmapDrawable = new BitmapDrawable(getResources(), b);
-                    ib.setBackground(bitmapDrawable);
+                    ib.setImageDrawable(bitmapDrawable);
+                    //set border
+                    final int sdk = android.os.Build.VERSION.SDK_INT;
+                    if(sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+                        ib.setBackgroundDrawable( getResources().getDrawable(R.drawable.border) );
+                    } else {
+                        ib.setBackground( getResources().getDrawable(R.drawable.border));
+                    }
                     int id = 1000 + r * 10 + c;
                     ib.setId(id);
                     llVertical.addView(ib);
@@ -288,25 +303,25 @@ public class FriendInGameActivity extends ActionBarActivity {
                     if (clickA == clickB) {
                         arrayX.add(clickA);
 
-                        ImageButton ib1 = (ImageButton) findViewById(clickA);
+                        ImageView ib1 = (ImageView) findViewById(clickA);
                         Bitmap b1 = decodeSampledBitmapFromResource(getResources(), R.drawable.block_black, blockSize(5), blockSize(5));
                         BitmapDrawable bitmapDrawable1 = new BitmapDrawable(getResources(), b1);
-                        ib1.setBackground(bitmapDrawable1);
+                        ib1.setImageDrawable(bitmapDrawable1);
 
                     } else {
                         arrayA.add(clickA);
                         Log.d("test", "clickA: " + clickA);
-                        ImageButton ib2 = (ImageButton) findViewById(clickA);
+                        ImageView ib2 = (ImageView) findViewById(clickA);
                         Bitmap b2 = decodeSampledBitmapFromResource(getResources(), R.drawable.orange, blockSize(5), blockSize(5));
                         BitmapDrawable bitmapDrawable2 = new BitmapDrawable(getResources(), b2);
-                        ib2.setBackground(bitmapDrawable2);
+                        ib2.setImageDrawable(bitmapDrawable2);
 
                         arrayB.add(clickB);
                         Log.d("test", "clickB: " + clickB);
-                        ImageButton ib3 = (ImageButton) findViewById(clickB);
+                        ImageView ib3 = (ImageView) findViewById(clickB);
                         Bitmap b3 = decodeSampledBitmapFromResource(getResources(), R.drawable.purple, blockSize(5), blockSize(5));
                         BitmapDrawable bitmapDrawable3 = new BitmapDrawable(getResources(), b3);
-                        ib3.setBackground(bitmapDrawable3);
+                        ib3.setImageDrawable(bitmapDrawable3);
                     }
 
                     calculateScores();
